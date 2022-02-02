@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		3DE6AB1327AA604F0046EE3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1227AA604F0046EE3C /* AppDelegate.swift */; };
 		3DE6AB1527AA604F0046EE3C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1427AA604F0046EE3C /* SceneDelegate.swift */; };
-		3DE6AB1727AA604F0046EE3C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1627AA604F0046EE3C /* ViewController.swift */; };
 		3DE6AB1A27AA604F0046EE3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1827AA604F0046EE3C /* Main.storyboard */; };
 		3DE6AB1C27AA60500046EE3C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1B27AA60500046EE3C /* Assets.xcassets */; };
 		3DE6AB1F27AA60500046EE3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1D27AA60500046EE3C /* LaunchScreen.storyboard */; };
@@ -21,6 +20,11 @@
 		3DE6AB4D27AA60DD0046EE3C /* FEDashboardModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4727AA60DD0046EE3C /* FEDashboardModels.swift */; };
 		3DE6AB4E27AA60DD0046EE3C /* FEDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4827AA60DD0046EE3C /* FEDashboardViewController.swift */; };
 		3DE6AB4F27AA60DD0046EE3C /* FEDashboardInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4927AA60DD0046EE3C /* FEDashboardInteractor.swift */; };
+		3DE6AB5227AA68300046EE3C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB5127AA68300046EE3C /* BaseViewController.swift */; };
+		3DE6AB5527AA6A310046EE3C /* FENetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB5427AA6A310046EE3C /* FENetworkService.swift */; };
+		3DE6AB5727AA6B3F0046EE3C /* AppConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB5627AA6B3F0046EE3C /* AppConstant.swift */; };
+		3DE6AB5927AA6E2C0046EE3C /* FEApiUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB5827AA6E2C0046EE3C /* FEApiUtility.swift */; };
+		3DE6AB5C27AA791B0046EE3C /* Planet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB5B27AA791B0046EE3C /* Planet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,7 +48,6 @@
 		3DE6AB0F27AA604F0046EE3C /* FEProblem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FEProblem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DE6AB1227AA604F0046EE3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DE6AB1427AA604F0046EE3C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		3DE6AB1627AA604F0046EE3C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		3DE6AB1927AA604F0046EE3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3DE6AB1B27AA60500046EE3C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3DE6AB1E27AA60500046EE3C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -61,6 +64,11 @@
 		3DE6AB4727AA60DD0046EE3C /* FEDashboardModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardModels.swift; sourceTree = "<group>"; };
 		3DE6AB4827AA60DD0046EE3C /* FEDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardViewController.swift; sourceTree = "<group>"; };
 		3DE6AB4927AA60DD0046EE3C /* FEDashboardInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardInteractor.swift; sourceTree = "<group>"; };
+		3DE6AB5127AA68300046EE3C /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		3DE6AB5427AA6A310046EE3C /* FENetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FENetworkService.swift; sourceTree = "<group>"; };
+		3DE6AB5627AA6B3F0046EE3C /* AppConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConstant.swift; sourceTree = "<group>"; };
+		3DE6AB5827AA6E2C0046EE3C /* FEApiUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEApiUtility.swift; sourceTree = "<group>"; };
+		3DE6AB5B27AA791B0046EE3C /* Planet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Planet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,14 +119,16 @@
 		3DE6AB1127AA604F0046EE3C /* FEProblem */ = {
 			isa = PBXGroup;
 			children = (
+				3DE6AB5A27AA79020046EE3C /* Models */,
+				3DE6AB5327AA69A70046EE3C /* Network Manager */,
 				3DE6AB4227AA60BA0046EE3C /* Scenes */,
 				3DE6AB1227AA604F0046EE3C /* AppDelegate.swift */,
 				3DE6AB1427AA604F0046EE3C /* SceneDelegate.swift */,
-				3DE6AB1627AA604F0046EE3C /* ViewController.swift */,
 				3DE6AB1827AA604F0046EE3C /* Main.storyboard */,
 				3DE6AB1B27AA60500046EE3C /* Assets.xcassets */,
 				3DE6AB1D27AA60500046EE3C /* LaunchScreen.storyboard */,
 				3DE6AB2027AA60500046EE3C /* Info.plist */,
+				3DE6AB5627AA6B3F0046EE3C /* AppConstant.swift */,
 			);
 			path = FEProblem;
 			sourceTree = "<group>";
@@ -144,6 +154,7 @@
 		3DE6AB4227AA60BA0046EE3C /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				3DE6AB5027AA681F0046EE3C /* Base */,
 				3DE6AB4327AA60C00046EE3C /* Dashboard */,
 			);
 			path = Scenes;
@@ -160,6 +171,31 @@
 				3DE6AB4927AA60DD0046EE3C /* FEDashboardInteractor.swift */,
 			);
 			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		3DE6AB5027AA681F0046EE3C /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				3DE6AB5127AA68300046EE3C /* BaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		3DE6AB5327AA69A70046EE3C /* Network Manager */ = {
+			isa = PBXGroup;
+			children = (
+				3DE6AB5427AA6A310046EE3C /* FENetworkService.swift */,
+				3DE6AB5827AA6E2C0046EE3C /* FEApiUtility.swift */,
+			);
+			path = "Network Manager";
+			sourceTree = "<group>";
+		};
+		3DE6AB5A27AA79020046EE3C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3DE6AB5B27AA791B0046EE3C /* Planet.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,13 +329,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				3DE6AB4A27AA60DD0046EE3C /* FEDashboardPresenter.swift in Sources */,
-				3DE6AB1727AA604F0046EE3C /* ViewController.swift in Sources */,
 				3DE6AB4F27AA60DD0046EE3C /* FEDashboardInteractor.swift in Sources */,
+				3DE6AB5727AA6B3F0046EE3C /* AppConstant.swift in Sources */,
 				3DE6AB1327AA604F0046EE3C /* AppDelegate.swift in Sources */,
+				3DE6AB5527AA6A310046EE3C /* FENetworkService.swift in Sources */,
+				3DE6AB5C27AA791B0046EE3C /* Planet.swift in Sources */,
 				3DE6AB4B27AA60DD0046EE3C /* FEDashboardWorker.swift in Sources */,
+				3DE6AB5227AA68300046EE3C /* BaseViewController.swift in Sources */,
 				3DE6AB4E27AA60DD0046EE3C /* FEDashboardViewController.swift in Sources */,
 				3DE6AB4D27AA60DD0046EE3C /* FEDashboardModels.swift in Sources */,
 				3DE6AB4C27AA60DD0046EE3C /* FEDashboardRouter.swift in Sources */,
+				3DE6AB5927AA6E2C0046EE3C /* FEApiUtility.swift in Sources */,
 				3DE6AB1527AA604F0046EE3C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

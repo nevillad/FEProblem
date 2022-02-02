@@ -25,8 +25,8 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     var router: (NSObjectProtocol & FEDashboardRoutingLogic & FEDashboardDataPassing)?
 
     class func instantiateFromStoryboard() ->  FEDashboardViewController {
-        #error("please update your storyboard name below")
-        let storyboard = UIStoryboard(name: "<storyboard_name>", bundle: nil)
+        //#error("please update your storyboard name below")
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as!  FEDashboardViewController
     }
 

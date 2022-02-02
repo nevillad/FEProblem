@@ -26,6 +26,9 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
     var worker: FEDashboardWorker?
     //var name: String = ""
 
+    private var planets: planets = []
+    private var vehicles: vehicles = []
+
     // MARK: Do FEDashboardDetails
 
     func doFEDashboardDetails(request: FEDashboardModel.FEDashboardDetails.Request)
@@ -38,5 +41,65 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
     }
 
     func initialise(showLoader: Bool = true) {
+
+    }
+
+    func fetchPlanets() {
+        let finalUrl = FEApiActions.Dashboard.getPlanets.urlString
+        let resource = Resource<planets>(url: finalUrl)
+        debugPrint("Final url is: \(resource.url)")
+
+        FENetworkServices.shared.fetchJson(resource: resource) { result in
+            self.presenter?.hideLoader(type: .general)
+            switch result {
+            case .success(let planets):
+                self.planets = planets
+                break
+            case .failure(let error):
+                self.presenter?.presentError(type: .custom(message: error.localizedDescription))
+            }
+        }
+    }
+
+    func fetchVehicles() {
+        let finalUrl = FEApiActions.Dashboard.getVehicles.urlString
+        let resource = Resource<vehicles>(url: finalUrl)
+        debugPrint("Final url is: \(resource.url)")
+
+        FENetworkServices.shared.fetchJson(resource: resource) { result in
+            self.presenter?.hideLoader(type: .general)
+            switch result {
+            case .success(let vehicles):
+                self.vehicles = vehicles
+                break
+            case .failure(let error):
+                self.presenter?.presentError(type: .custom(message: error.localizedDescription))
+            }
+        }
     }
 }
+
+
+// MARK: - WelcomeElement
+struct Vehicle: Codable {
+    let name: String
+    let totalNo, maxDistance, speed: Int
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case totalNo = "total_no"
+        case maxDistance = "max_distance"
+        case speed
+    }
+}
+
+typealias vehicles = [Vehicle]
+
+
+// MARK: - WelcomeElement
+struct Planet: Codable {
+    let name: String
+    let distance: Int
+}
+
+typealias planets = [Planet]

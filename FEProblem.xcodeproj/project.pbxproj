@@ -15,6 +15,12 @@
 		3DE6AB1F27AA60500046EE3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1D27AA60500046EE3C /* LaunchScreen.storyboard */; };
 		3DE6AB2A27AA60500046EE3C /* FEProblemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB2927AA60500046EE3C /* FEProblemTests.swift */; };
 		3DE6AB3527AA60500046EE3C /* FEProblemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB3427AA60500046EE3C /* FEProblemUITests.swift */; };
+		3DE6AB4A27AA60DD0046EE3C /* FEDashboardPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4427AA60DD0046EE3C /* FEDashboardPresenter.swift */; };
+		3DE6AB4B27AA60DD0046EE3C /* FEDashboardWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4527AA60DD0046EE3C /* FEDashboardWorker.swift */; };
+		3DE6AB4C27AA60DD0046EE3C /* FEDashboardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4627AA60DD0046EE3C /* FEDashboardRouter.swift */; };
+		3DE6AB4D27AA60DD0046EE3C /* FEDashboardModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4727AA60DD0046EE3C /* FEDashboardModels.swift */; };
+		3DE6AB4E27AA60DD0046EE3C /* FEDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4827AA60DD0046EE3C /* FEDashboardViewController.swift */; };
+		3DE6AB4F27AA60DD0046EE3C /* FEDashboardInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB4927AA60DD0046EE3C /* FEDashboardInteractor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +55,12 @@
 		3DE6AB3027AA60500046EE3C /* FEProblemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FEProblemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DE6AB3427AA60500046EE3C /* FEProblemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEProblemUITests.swift; sourceTree = "<group>"; };
 		3DE6AB3627AA60500046EE3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DE6AB4427AA60DD0046EE3C /* FEDashboardPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardPresenter.swift; sourceTree = "<group>"; };
+		3DE6AB4527AA60DD0046EE3C /* FEDashboardWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardWorker.swift; sourceTree = "<group>"; };
+		3DE6AB4627AA60DD0046EE3C /* FEDashboardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardRouter.swift; sourceTree = "<group>"; };
+		3DE6AB4727AA60DD0046EE3C /* FEDashboardModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardModels.swift; sourceTree = "<group>"; };
+		3DE6AB4827AA60DD0046EE3C /* FEDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardViewController.swift; sourceTree = "<group>"; };
+		3DE6AB4927AA60DD0046EE3C /* FEDashboardInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardInteractor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +111,7 @@
 		3DE6AB1127AA604F0046EE3C /* FEProblem */ = {
 			isa = PBXGroup;
 			children = (
+				3DE6AB4227AA60BA0046EE3C /* Scenes */,
 				3DE6AB1227AA604F0046EE3C /* AppDelegate.swift */,
 				3DE6AB1427AA604F0046EE3C /* SceneDelegate.swift */,
 				3DE6AB1627AA604F0046EE3C /* ViewController.swift */,
@@ -126,6 +139,27 @@
 				3DE6AB3627AA60500046EE3C /* Info.plist */,
 			);
 			path = FEProblemUITests;
+			sourceTree = "<group>";
+		};
+		3DE6AB4227AA60BA0046EE3C /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				3DE6AB4327AA60C00046EE3C /* Dashboard */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		3DE6AB4327AA60C00046EE3C /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				3DE6AB4427AA60DD0046EE3C /* FEDashboardPresenter.swift */,
+				3DE6AB4527AA60DD0046EE3C /* FEDashboardWorker.swift */,
+				3DE6AB4627AA60DD0046EE3C /* FEDashboardRouter.swift */,
+				3DE6AB4727AA60DD0046EE3C /* FEDashboardModels.swift */,
+				3DE6AB4827AA60DD0046EE3C /* FEDashboardViewController.swift */,
+				3DE6AB4927AA60DD0046EE3C /* FEDashboardInteractor.swift */,
+			);
+			path = Dashboard;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,8 +292,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3DE6AB4A27AA60DD0046EE3C /* FEDashboardPresenter.swift in Sources */,
 				3DE6AB1727AA604F0046EE3C /* ViewController.swift in Sources */,
+				3DE6AB4F27AA60DD0046EE3C /* FEDashboardInteractor.swift in Sources */,
 				3DE6AB1327AA604F0046EE3C /* AppDelegate.swift in Sources */,
+				3DE6AB4B27AA60DD0046EE3C /* FEDashboardWorker.swift in Sources */,
+				3DE6AB4E27AA60DD0046EE3C /* FEDashboardViewController.swift in Sources */,
+				3DE6AB4D27AA60DD0046EE3C /* FEDashboardModels.swift in Sources */,
+				3DE6AB4C27AA60DD0046EE3C /* FEDashboardRouter.swift in Sources */,
 				3DE6AB1527AA604F0046EE3C /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

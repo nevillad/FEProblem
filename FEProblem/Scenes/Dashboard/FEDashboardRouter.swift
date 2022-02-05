@@ -12,8 +12,8 @@
 
 import UIKit
 
-@objc protocol FEDashboardRoutingLogic {
-    func showNextScene()
+protocol FEDashboardRoutingLogic {
+    func showNextScene(screenSelection: SelecionType)
 }
 
 protocol FEDashboardDataPassing {
@@ -25,17 +25,54 @@ class FEDashboardRouter: NSObject, FEDashboardRoutingLogic, FEDashboardDataPassi
     var dataStore: FEDashboardDataStore?
 
     // MARK: Navigation
-    func showNextScene() {
+    func showNextScene(screenSelection: SelecionType) {
+        switch screenSelection {
+        case .selectPlanet: showOptionsPopup(screenSelection: screenSelection)
+        case .selectVehicle: showOptionsPopup(screenSelection: screenSelection)
+        case .showResult:showResultScreen()
+        }
+    }
 
+    func showOptionsPopup(screenSelection: SelecionType) {
+        let bottomSheetContentView = ListOptionsViewController.instantiateFromStoryboard()
+        bottomSheetContentView.delegate = viewController
+        var destinationDS = bottomSheetContentView.router?.dataStore
+        passDataTo(&destinationDS, from: dataStore, selectionType: screenSelection )
+
+        let controller = BotttomSheetContainerViewController()
+        controller.viewController = bottomSheetContentView
+        controller.sheetCornerRadius = 16
+        controller.sheetSizingStyle = .dynamic
+        controller.handleStyle = .inside
+        controller.contentInsets = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
+        viewController?.present(controller, animated: true, completion: nil)
+    }
+
+    func showResultScreen(){
+        let resultVC = FEResultViewController.instantiateFromStoryboard()
+        var destinationDS = resultVC.router?.dataStore
+        passDataTo(&destinationDS, from: dataStore)
+
+        viewController?.navigationController?.pushViewController(resultVC, animated: true)
     }
 }
 
 // MARK: Passing data
 extension FEDashboardRouter {
 
-    /*
-    func passDataTo(_ destinationDS: inout <destinationDataStore>?, from sourceDS: FEDashboardDataStore?) {
-
+    // MARK: Passing data
+    func passDataTo(_ destinationDS: inout ListOptionsDataStore?, from sourceDS: FEDashboardDataStore?, selectionType: SelecionType) {
+        destinationDS?.title = "Choose other varients"
+        destinationDS?.subTitle = "Tailor-made for your needs".uppercased()
+        destinationDS?.selectionType = selectionType
+        destinationDS?.selectedDestination = sourceDS?.selectedDestination
+        destinationDS?.items = sourceDS?.filtredPlanetsOption ?? []
+        if selectionType == .selectVehicle {
+            destinationDS?.items = sourceDS?.filtredVehiclesOption ?? []
+        }
     }
-    */
+
+    func passDataTo(_ destinationDS: inout FEResultDataStore?, from sourceDS: FEDashboardDataStore?) {
+        destinationDS?.destinations = sourceDS?.destinations ?? []
+    }
 }

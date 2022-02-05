@@ -7,6 +7,9 @@
 
 import Foundation
 
+public typealias Parameters = [String: Any]
+public typealias HTTPHeaders = [String: String]
+
 enum CustomResult<T> {
     case success(T)
     case failure(Error)
@@ -23,27 +26,28 @@ enum CustomeErrors: Error {
     case customErrorPopup(message: String)
 }
 
-/// HTTP method type
-enum HTTPMethod {
-    case GET,POST,DELETE,PUT
-    var value : String {
-        switch self {
-        case .GET:
-            return "GET"
-        case .POST:
-            return "POST"
-        case .DELETE:
-            return "DELETE"
-        case .PUT:
-            return "PUT"
-        }
+
+public struct HTTPMethod: RawRepresentable, Equatable, Hashable {
+    /// `GET` method.
+    public static let get = HTTPMethod(rawValue: "GET")
+    /// `POST` method.
+    public static let post = HTTPMethod(rawValue: "POST")
+    /// `PUT` method.
+
+    public let rawValue: String
+
+    public init(rawValue: String) {
+        self.rawValue = rawValue
     }
 }
 
+
 struct Resource<T: Decodable> {
     let url: String
-    var httpMethod = HTTPMethod.GET.value
+    var httpMethod = HTTPMethod.get
     var useCacheResponse: Bool = true
+    var body: Parameters?
+    var httpHeaders: HTTPHeaders = AppUtility.sharedInstance.getDefaultHTTPHeaders()
 }
 
 final class FENetworkServices {
@@ -77,8 +81,22 @@ final class FENetworkServices {
         }
 
         var urlRequest = URLRequest(url: serverURL)
-        urlRequest.httpMethod = resource.httpMethod
+        urlRequest.httpMethod = resource.httpMethod.rawValue
 
+        // pass all header fileds in URLRequest object
+        for (key, values) in resource.httpHeaders {
+            urlRequest.setValue(values, forHTTPHeaderField: key)
+        }
+
+        if let body = resource.body {
+            let bodyData = try? JSONSerialization.data(
+                withJSONObject: body,
+                options: []
+            )
+            urlRequest.httpBody = bodyData
+        }
+
+        //curl -v -X POST 'https://findfalcone.herokuapp.com/token' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Cookie:'
 
         // Single request in a day
         // Load offline data if available
@@ -91,14 +109,17 @@ final class FENetworkServices {
         ///Retrive url reponse cached for url request
 
         var apiCachedResponse: CachedURLResponse?
-        if let cacheData = urlCache.cachedResponse(for: urlRequest) {
-            apiCachedResponse = cacheData
-            //Step 2
-            ///Check if url reponse cached is of same day
-            ///If data is of same day retunr clouser with cached data
-            if let userInfo = cacheData.userInfo, let dateTime = userInfo[kDateTime] as? Date, Calendar.current.isDateInToday(dateTime), let decodeData = try? JSONDecoder().decode(T.self, from: cacheData.data) {
-                completion(.success(decodeData))
-                return
+
+        if resource.useCacheResponse {
+            if let cacheData = urlCache.cachedResponse(for: urlRequest) {
+                apiCachedResponse = cacheData
+                //Step 2
+                ///Check if url reponse cached is of same day
+                ///If data is of same day retunr clouser with cached data
+                if let userInfo = cacheData.userInfo, let dateTime = userInfo[kDateTime] as? Date, Calendar.current.isDateInToday(dateTime), let decodeData = try? JSONDecoder().decode(T.self, from: cacheData.data) {
+                    completion(.success(decodeData))
+                    return
+                }
             }
         }
 
@@ -117,6 +138,7 @@ final class FENetworkServices {
                         return
                     }
                 }
+                //  curl -v -X POST 'https://findfalcone.herokuapp.com/token' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Cookie:'
 
                 debugPrint("APIClient :: Server data return using API calling")
                 if let responseObject = response as? HTTPURLResponse {
@@ -152,6 +174,58 @@ final class FENetworkServices {
 
         })
         task.resume()
+    }
+
+    static func sendRequest<T>(resource: Resource<T>,
+                               sessionConfig: URLSessionConfiguration = URLSessionConfiguration.default,
+                               completion: @escaping(CustomResult<T>) -> Void) {
+
+        if let url = URL(string: resource.url) {
+            var request = URLRequest(url: url)
+            request.httpMethod = resource.httpMethod.rawValue
+            // pass all header fileds in URLRequest object
+            for (key, values) in resource.httpHeaders {
+                request.setValue(values, forHTTPHeaderField: key)
+            }
+            // pass request body in URLRequest object
+            if let body = resource.body {
+                let bodyData = try? JSONSerialization.data(
+                    withJSONObject: body,
+                    options: []
+                )
+                request.httpBody = bodyData
+            }
+
+            // Create the HTTP request
+            let session = URLSession(configuration: URLSessionConfiguration.default)
+            let task = session.dataTask(with: request) { (data, response, error) in
+                DispatchQueue.main.async { // need to be performed on main thread
+                    if let _ = error {
+                        // Handle HTTP request error
+                        //completion(.failure(CustomeErrors.dataUnavailable, nil))
+                    } else if let data = data {
+                        // Handle HTTP request response
+                        if let responseObject = response as? HTTPURLResponse {
+
+                            if responseObject.statusCode == 200 {
+
+                                let userInfo = [kDateTime: Date()]
+                                if let decodeData = try? JSONDecoder().decode(T.self, from: data) {
+                                    completion(.success(decodeData))
+                                }
+                            }
+
+                        }
+                        let decodedResponse = try? JSONDecoder().decode(T.self, from: data)
+
+                    } else {
+                        // Handle unexpected error
+                        //completion(.failure(CustomeErrors.dataUnavailable, nil))
+                    }
+                }
+            }
+            task.resume()
+        }
     }
 }
 

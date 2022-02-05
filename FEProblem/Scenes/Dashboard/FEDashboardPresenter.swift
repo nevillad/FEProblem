@@ -26,12 +26,48 @@ class FEDashboardPresenter: FEDashboardPresentationLogic {
     // MARK: Do FEDashboardDetails
 
     func presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response) {
-        let viewModel = FEDashboardModel.FEDashboardDetails.ViewModel()
+        var listItem: [FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem] = []
+
+        for destination in response.destinations {
+            let item = FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem(DisplayedMissionName: destination.title,
+                                                                                   DisplayedPlanetName: destination.planet?.name,
+                                                                                   DisplayedPlanetDistance: "\(destination.planet?.distance ?? 0)",
+                                                                                   DisplayedPlanetImage: destination.planet?.name.lowercased(),
+                                                                                   isPlanetVisible: !(destination.planet == nil),
+                                                                                   DisplayedVehicleName: destination.vehicle?.name,
+                                                                                   DisplayedVehicleDistance: "\(destination.vehicle?.maxDistance ?? 0)",
+                                                                                   DisplayedVehicleImage: destination.vehicle?.name.lowercased(),
+                                                                                   isVehicleVisible:!(destination.vehicle == nil),
+                                                                                   isVehicleSelectionEnable: !(destination.planet == nil),
+                                                                                   planetName: destination.planet != nil ? "Change Planet" : "Select Planet",
+                                                                                   vehicleName: destination.vehicle != nil ? "Change Vehicle" : "Select Vehicle",
+                                                                                   ItemTag: destination.tag ?? 0)
+
+//            //let item = FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem(DisplayedPlanetName: destination.planet?.name,
+//                                                                        DisplayedPlanetDistance: destination.planet?.distance,
+//                                                                        DisplayedPlanetImage: destination.planet?.name.lowercased(),
+//                                                                        isPlanetVisible: !(destination.planet == nil),
+//                                                                        DisplayedVehicleName: destination.vehicle?.name,
+//                                                                        DisplayedVehicleDistance: destination.vehicle?.maxDistance,
+//                                                                        DisplayedVehicleImage: destination.vehicle?.name.lowercased(),
+//                                                                        isVehicleSelectionEnable: !(destination.planet == nil),
+//                                                                        planetName: destination.planet?.name ?? "Select Planet",
+//                                                                        vehicleName: destination.vehicle?.name ?? "Select Vehicle",
+//                                                                        ItemTag: destination.tag ?? 0)
+
+            listItem.append(item)
+
+            //planetName: ,
+
+              //                                                              isVehicleSelectionEnable: !(destination.planet == nil),
+        }
+
+        let viewModel = FEDashboardModel.FEDashboardDetails.ViewModel(displayingDestination: listItem)
         viewController?.displayFEDashboardDetails(viewModel: viewModel)
     }
 
     func presentNextScene(response: FEDashboardModel.NextScene.Response) {
-        let viewModel = FEDashboardModel.NextScene.ViewModel()
+        let viewModel = FEDashboardModel.NextScene.ViewModel(selcctType: response.selcctType)
         viewController?.displayNextScene(viewModel: viewModel)
     }
 

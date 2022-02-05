@@ -13,6 +13,13 @@
 import UIKit
 
 class FEDashboardWorker {
-    func doSomeWork() {
+
+    func getDestination() -> [Destination]? {
+        if let mockData = AppUtility.sharedInstance.readLocalMockFile(forName: "Destinations") {
+            if let decodeData = try? JSONDecoder().decode([Destination].self, from: mockData) {
+                return decodeData
+            }
+       }
+        return nil
     }
 }

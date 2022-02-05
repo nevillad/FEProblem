@@ -24,6 +24,10 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     var interactor: FEDashboardBusinessLogic?
     var router: (NSObjectProtocol & FEDashboardRoutingLogic & FEDashboardDataPassing)?
 
+    @IBOutlet weak var tvDashboard: UITableView!
+
+    var displayedList: [FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem] = []
+
     class func instantiateFromStoryboard() ->  FEDashboardViewController {
         //#error("please update your storyboard name below")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -72,12 +76,24 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        interactor?.initialise(showLoader: true)
+        initialise()
     }
 
     // MARK: Do FEDashboardDetails
 
-    //@IBOutlet weak var nameTextField: UITextField!
+    // MARK: Do something
+
+    private func initialise() {
+
+        tvDashboard.estimatedRowHeight = 1000
+        tvDashboard.rowHeight = UITableView.automaticDimension
+        tvDashboard.register(UINib(nibName: kDashboardTableViewCell_ID, bundle: Bundle.main), forCellReuseIdentifier: kDashboardTableViewCell_ID)
+
+        tvDashboard.dataSource = self
+        tvDashboard.delegate = self
+
+        interactor?.initialise(showLoader: false)
+    }
 
     func doFEDashboardDetails() {
         let request = FEDashboardModel.FEDashboardDetails.Request()
@@ -85,11 +101,12 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     }
 
     func displayFEDashboardDetails(viewModel: FEDashboardModel.FEDashboardDetails.ViewModel) {
-        //nameTextField.text = viewModel.name
+        self.displayedList = viewModel.displayingDestination
+        tvDashboard.reloadData()
     }
 
     func displayNextScene(viewModel: FEDashboardModel.NextScene.ViewModel) {
-        
+        router?.showNextScene(screenSelection: viewModel.selcctType)
     }
 
     func displayLoader(type: FEDashboardLoaderType) {
@@ -107,4 +124,70 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     func displayError(type: FEDashboardErrorType) {
 
     }
+
+    @IBAction func cliecked(sender: UIButton) {
+        router?.showNextScene(screenSelection: .showResult)
+    }
+
+
+}
+
+extension FEDashboardViewController: ListOptionDelegate {
+
+    func didSelect(_id selectedID: Int64, selectionType: SelecionType) {
+        interactor?.setOption(request: FEDashboardModel.FEDashboardSetOption.Request(selcctType: selectionType, selectedID: selectedID))
+    }
+
+}
+
+// MARK: UITableView delegate and datasource
+extension FEDashboardViewController: UITableViewDelegate, UITableViewDataSource {
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return  displayedList.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: kDashboardTableViewCell_ID, for: indexPath) as! DashboardTableViewCell
+
+        let cellItem = displayedList[indexPath.row]
+        //self.buttonVehicleSelector = buttonVehicleSelector
+        //self.buttonPlanetSelector = buttonPlanetSelector
+
+        cell.configureCell(item: cellItem, target: self, buttonPlanetSelector: #selector(selectPlanet(_:)), buttonVehicleSelector: #selector(selectVehicle(_:)))
+
+
+        //let listModel = displayedList[indexPath.row]
+        //cell.lblTitle.text = listModel.title
+        //cell.lblSubTitle.text = listModel.subTitle
+        //if let lImage = listModel.leftImage, !lImage.isEmpty() {
+        //  cell.ivLeft.image = UIImage(named: lImage)
+        //}
+        //cell.toggleCellStyle(isSelected: listModel.isSelcted)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //var listModel = displayedList[indexPath.row]
+        //if (listModel.leftImage ?? "").isEmpty() {
+        //let currentCell = tableView.cellForRow(at: indexPath) as? ListOptionsTableViewCell {
+        //  listModel.isSelcted = !listModel.isSelcted
+        // currentCell.toggleCellStyle(isSelected: listModel.isSelcted)
+        // update array
+        //displayedList[indexPath.row] = listModel
+        //}
+        //interactor?.updateSelctedProduct(productID: listModel.cellID)
+    }
+
+    @objc
+    func selectPlanet(_ sender: UIButton) {
+        interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectPlanet, selectedID: sender.tag))
+    }
+
+    @objc
+    func selectVehicle(_ sender: UIButton) {
+        interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectVehicle, selectedID: sender.tag))
+    }
+
 }

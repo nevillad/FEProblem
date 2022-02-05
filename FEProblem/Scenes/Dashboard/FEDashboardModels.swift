@@ -12,6 +12,13 @@
 
 import UIKit
 
+enum SelecionType {
+    case selectPlanet
+    case selectVehicle
+    case showResult
+
+}
+
 enum FEDashboardLoaderType {
     case general
 }
@@ -28,17 +35,79 @@ enum FEDashboardModel {
         struct Request {
         }
         struct Response {
+            var destinations: [Destination]
         }
         struct ViewModel {
+            struct DisplayedItem {
+
+                var DisplayedMissionName: String?
+
+                var DisplayedPlanetName: String?
+                var DisplayedPlanetDistance: String?
+                var DisplayedPlanetImage: String?
+                var isPlanetVisible: Bool = false
+
+                var DisplayedVehicleName: String?
+                var DisplayedVehicleDistance: String?
+                var DisplayedVehicleImage: String?
+                var isVehicleVisible: Bool = false
+                var isVehicleSelectionEnable: Bool = false
+
+                var planetName: String
+                var vehicleName: String
+                var ItemTag: Int
+
+            }
+            var displayingDestination: [DisplayedItem]
+        }
+    }
+
+    enum FEDashboardDestinationSelection {
+        struct Request {
+            var selcctType: SelecionType
+            var selectedID: Int
+        }
+
+        struct Response {
+            var destinations: [Destination]
+        }
+        struct ViewModel {
+            struct DisplayedItem {
+                var planetName: String
+                var vehicleName: String
+                var ItemTag: Int
+            }
+            var displayingDestination: [DisplayedItem]
+        }
+    }
+
+    enum FEDashboardSetOption {
+        struct Request {
+            var selcctType: SelecionType
+            var selectedID: Int64
+        }
+
+        struct Response {
+
+        }
+        struct ViewModel {
+
         }
     }
 
     enum NextScene {
         struct Request {
         }
+
         struct Response {
+            var selcctType: SelecionType
         }
+
         struct ViewModel {
+            var selcctType: SelecionType
         }
     }
 }
+
+
+

@@ -118,7 +118,7 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
         debugPrint("Final url is: \(resource.url)")
 
         waitingGroup.enter()
-        FENetworkServices.shared.fetchJson(resource: resource) { result in
+        FENetworkServices.shared.sendRequest(resource: resource) { result in
             self.presenter?.hideLoader(type: .general)
             switch result {
             case .success(let planets):
@@ -137,7 +137,7 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
         debugPrint("Final url is: \(resource.url)")
 
         waitingGroup.enter()
-        FENetworkServices.shared.fetchJson(resource: resource) { result in
+        FENetworkServices.shared.sendRequest(resource: resource) { result in
             self.presenter?.hideLoader(type: .general)
             switch result {
             case .success(let vehicles):

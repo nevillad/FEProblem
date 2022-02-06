@@ -48,9 +48,9 @@ class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
         debugPrint(finalUrl)
         //"https://findfalcone.herokuapp.com/token"
         var resource = Resource<Token>(url: finalUrl)
-
+        resource.useCacheResponse = false
         resource.httpMethod = HTTPMethod.post
-        FENetworkServices.sendRequest(resource: resource) { result in
+        FENetworkServices.shared.sendRequest(resource: resource) { result in
             switch result {
             case .success(let token):
                 debugPrint(token)
@@ -66,6 +66,7 @@ class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
         //self.waitingGroup.enter()
         let finalUrl = FEApiActions.find.urlString
         var resource = Resource<Result>(url: finalUrl)
+        resource.useCacheResponse = false
         var parameters = Parameters()
         parameters["token"] = token
         let planetName = self.destinations.reduce([String](), { newBranch, branch in
@@ -83,7 +84,7 @@ class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
         parameters["vehicle_names"] = vehicleName
         resource.httpMethod = HTTPMethod.post
         resource.body = parameters
-        FENetworkServices.sendRequest(resource: resource) { result in
+        FENetworkServices.shared.sendRequest(resource: resource) { result in
             switch result {
             case .success(let result):
                 var destination: Destination?

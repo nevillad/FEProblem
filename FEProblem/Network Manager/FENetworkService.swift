@@ -70,33 +70,30 @@ final class FENetworkServices {
         return URLSession(configuration: sessionConfig)
     }
 
+    func sendRequest<T>(resource: Resource<T>,
+                               sessionConfig: URLSessionConfiguration = URLSessionConfiguration.default,
+                               completion: @escaping(CustomResult<T>) -> Void) {
 
-    func fetchJson<T>(resource: Resource<T>,
-                      completion: @escaping(CustomResult<T>) -> Void) {
-
-
-        guard let serverURL = URL(string: resource.url) else {
+        guard let url = URL(string: resource.url) else {
             completion(.failure(CustomeErrors.dataUnavailable))
             return
         }
 
-        var urlRequest = URLRequest(url: serverURL)
-        urlRequest.httpMethod = resource.httpMethod.rawValue
-
+        var request = URLRequest(url: url)
+        request.httpMethod = resource.httpMethod.rawValue
         // pass all header fileds in URLRequest object
-        for (key, values) in resource.httpHeaders {
-            urlRequest.setValue(values, forHTTPHeaderField: key)
-        }
 
+        for (key, values) in resource.httpHeaders {
+            request.setValue(values, forHTTPHeaderField: key)
+        }
+        // pass request body in URLRequest object
         if let body = resource.body {
             let bodyData = try? JSONSerialization.data(
                 withJSONObject: body,
                 options: []
             )
-            urlRequest.httpBody = bodyData
+            request.httpBody = bodyData
         }
-
-        //curl -v -X POST 'https://findfalcone.herokuapp.com/token' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Cookie:'
 
         // Single request in a day
         // Load offline data if available
@@ -111,7 +108,7 @@ final class FENetworkServices {
         var apiCachedResponse: CachedURLResponse?
 
         if resource.useCacheResponse {
-            if let cacheData = urlCache.cachedResponse(for: urlRequest) {
+            if let cacheData = urlCache.cachedResponse(for: request) {
                 apiCachedResponse = cacheData
                 //Step 2
                 ///Check if url reponse cached is of same day
@@ -123,11 +120,12 @@ final class FENetworkServices {
             }
         }
 
-        let session = urlSession()
-        let task = session.dataTask(with: urlRequest, completionHandler: {
-            (data,response,error) in
-            DispatchQueue.main.async {
-                if error != nil {
+        // Create the HTTP request
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            DispatchQueue.main.async { // need to be performed on main thread
+
+                if let _ = error {
                     //Step 4
                     /// return local cache data if error occuered and data not available
                     if let cacheData = apiCachedResponse, let decodeData = try? JSONDecoder().decode(T.self, from: cacheData.data)  {
@@ -138,18 +136,16 @@ final class FENetworkServices {
                         return
                     }
                 }
-                //  curl -v -X POST 'https://findfalcone.herokuapp.com/token' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Cookie:'
-
                 debugPrint("APIClient :: Server data return using API calling")
                 if let responseObject = response as? HTTPURLResponse {
                     if responseObject.statusCode == 200, let responseData = data {
                         //Step 3
                         /// if response data found then cache those data
                         /// NOTE: nagative case not handle here assume response get success with 200 status code
-                        urlRequest.url = serverURL
+                        request.url = url
                         let userInfo = [kDateTime: Date()]
                         let cachedResponse = CachedURLResponse(response: responseObject, data: responseData, userInfo: userInfo, storagePolicy: .allowed)
-                        self.urlCache.storeCachedResponse(cachedResponse, for: urlRequest)
+                        self.urlCache.storeCachedResponse(cachedResponse, for: request)
                         if let decodeData = try? JSONDecoder().decode(T.self, from: responseData) {
                             completion(.success(decodeData))
                         }
@@ -171,61 +167,10 @@ final class FENetworkServices {
                     }
                 }
             }
-
-        })
-        task.resume()
-    }
-
-    static func sendRequest<T>(resource: Resource<T>,
-                               sessionConfig: URLSessionConfiguration = URLSessionConfiguration.default,
-                               completion: @escaping(CustomResult<T>) -> Void) {
-
-        if let url = URL(string: resource.url) {
-            var request = URLRequest(url: url)
-            request.httpMethod = resource.httpMethod.rawValue
-            // pass all header fileds in URLRequest object
-            for (key, values) in resource.httpHeaders {
-                request.setValue(values, forHTTPHeaderField: key)
-            }
-            // pass request body in URLRequest object
-            if let body = resource.body {
-                let bodyData = try? JSONSerialization.data(
-                    withJSONObject: body,
-                    options: []
-                )
-                request.httpBody = bodyData
-            }
-
-            // Create the HTTP request
-            let session = URLSession(configuration: URLSessionConfiguration.default)
-            let task = session.dataTask(with: request) { (data, response, error) in
-                DispatchQueue.main.async { // need to be performed on main thread
-                    if let _ = error {
-                        // Handle HTTP request error
-                        //completion(.failure(CustomeErrors.dataUnavailable, nil))
-                    } else if let data = data {
-                        // Handle HTTP request response
-                        if let responseObject = response as? HTTPURLResponse {
-
-                            if responseObject.statusCode == 200 {
-
-                                let userInfo = [kDateTime: Date()]
-                                if let decodeData = try? JSONDecoder().decode(T.self, from: data) {
-                                    completion(.success(decodeData))
-                                }
-                            }
-
-                        }
-                        let decodedResponse = try? JSONDecoder().decode(T.self, from: data)
-
-                    } else {
-                        // Handle unexpected error
-                        //completion(.failure(CustomeErrors.dataUnavailable, nil))
-                    }
-                }
-            }
-            task.resume()
         }
+        task.resume()
+
     }
+
 }
 

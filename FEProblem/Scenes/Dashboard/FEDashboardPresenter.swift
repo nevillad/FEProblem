@@ -30,12 +30,12 @@ class FEDashboardPresenter: FEDashboardPresentationLogic {
 
         for destination in response.destinations {
             let item = FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem(DisplayedMissionName: destination.title,
-                                                                                   DisplayedPlanetName: destination.planet?.name,
-                                                                                   DisplayedPlanetDistance: "\(destination.planet?.distance ?? 0)",
+                                                                                   DisplayedPlanetName: "Planet: \(destination.planet?.name.uppercased() ?? "")",
+                                                                                   DisplayedPlanetDistance: "Distance \(destination.planet?.distance ?? 0) megamiles",
                                                                                    DisplayedPlanetImage: destination.planet?.name.lowercased(),
                                                                                    isPlanetVisible: !(destination.planet == nil),
-                                                                                   DisplayedVehicleName: destination.vehicle?.name,
-                                                                                   DisplayedVehicleDistance: "\(destination.vehicle?.maxDistance ?? 0)",
+                                                                                   DisplayedVehicleName: destination.vehicle?.name.uppercased(),
+                                                                                   DisplayedVehicleDistance: "Unit(\(destination.vehicle?.totalNo ?? 0)), Max Distance\(destination.vehicle?.maxDistance ?? 0) megamiles",
                                                                                    DisplayedVehicleImage: destination.vehicle?.name.lowercased(),
                                                                                    isVehicleVisible:!(destination.vehicle == nil),
                                                                                    isVehicleSelectionEnable: !(destination.planet == nil),

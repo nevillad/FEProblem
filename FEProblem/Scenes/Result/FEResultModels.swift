@@ -29,9 +29,14 @@ enum FEResultModel {
         }
         struct Response {
             var result: Result
+            var destination: Destination?
         }
         struct ViewModel {
             var message: String
+            var planetImage: String?
+            var vehileImage: String?
+            var notFoundImage: String?
+         //   var ShowMisson
         }
     }
 

@@ -17,6 +17,7 @@ protocol FEDashboardBusinessLogic {
     func initialise(showLoader: Bool)
     func selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request)
     func setOption(request: FEDashboardModel.FEDashboardSetOption.Request)
+    func clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request)
 }
 
 protocol FEDashboardDataStore {
@@ -75,7 +76,7 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
     func selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request) {
         if let destination = self.destinations.filter({ $0.tag == request.selectedID }).first {
             self.selectedDestination = destination
-            self.filtredVehiclesOption = self.vehicles.filter { $0.totalNo > $0.selectedCount ?? 0 || $0._id == destination.vehicle?._id }
+            self.filtredVehiclesOption = self.vehicles.filter { $0.totalNo > $0.selectedCount ?? 0 && $0.maxDistance >= destination.planet?.distance ?? 0 || $0._id == destination.vehicle?._id }
             self.filtredPlanetsOption = self.planets.filter({ $0.isSelected == false || ($0.isSelected == true && $0._id == destination.planet?._id) })
             presenter?.presentNextScene(response: FEDashboardModel.NextScene.Response(selcctType: request.selcctType))
         }
@@ -93,8 +94,23 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
         }
 
         self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+    }
+
+    func clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request) {
+        if let destination = self.destinations.filter({ $0.tag == request.selectedID }).first {
+            if request.selcctType == .selectVehicle, let vehicle = destination.vehicle {
+                vehicle.selectedCount! -= 1
+                destination.vehicle = nil
+            } else if request.selcctType == .selectPlanet {
+                destination.planet?.setSelected(value: false)
+                destination.planet = nil
+            }
+        }
+
+        self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
 
     }
+
 
     func fetchPlanets() {
         let finalUrl = FEApiActions.Dashboard.getPlanets.urlString

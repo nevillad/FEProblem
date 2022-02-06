@@ -14,11 +14,14 @@ let kDateTime = "DateTime"
 // Constant Variables
 public let kCornerRadius: CGFloat = 8
 
-let primaryBurgundy = UIColor.systemPink// Color.secondaryPink100.value
-let secondaryGrey = UIColor.lightGray
-let secondaryLightGrey = UIColor.systemGray3 // Color.secondaryGrey50.value
-let secondaryLightGrey2 = UIColor.systemGray6
-let whiteColor = UIColor.white
+public let primaryColor = UIColor.black
+public let secondaryColor = UIColor.yellow
+
+//public let primaryBurgundy = UIColor.systemPink// Color.secondaryPink100.value
+public let secondaryGrey = UIColor.lightGray
+public let secondaryLightGrey = UIColor.systemGray3 // Color.secondaryGrey50.value
+public let secondaryLightGrey2 = UIColor.systemGray6
+public let whiteColor = UIColor.white
 
 
 enum NotificationName: String {

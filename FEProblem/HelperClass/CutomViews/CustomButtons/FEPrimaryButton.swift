@@ -13,7 +13,7 @@ class FEPrimaryButton: FEBaseButton {
 
     override var isEnabled: Bool {
         didSet {
-            self.backgroundColor = isEnabled ? primaryBurgundy : secondaryGrey
+            self.backgroundColor = isEnabled ? primaryColor : secondaryGrey
         }
     }
 
@@ -39,7 +39,7 @@ class FEPrimaryButton: FEBaseButton {
     }
 
     private func setupPrimaryButton() {
-        self.backgroundColor = primaryBurgundy
+        self.backgroundColor = primaryColor
         self.setTitleColor(whiteColor, for: .normal)
         self.setTitleColor(whiteColor, for: .selected)
         self.setTitleColor(whiteColor, for: .disabled)

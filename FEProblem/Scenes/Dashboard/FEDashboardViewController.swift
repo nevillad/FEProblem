@@ -76,6 +76,11 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = primaryColor
+        self.navigationController?.navigationBar.tintColor = whiteColor
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: whiteColor]
+        self.title = "Finding Falcone".uppercased()
+        //self.navigationController?.navigationBar.ti
         initialise()
     }
 
@@ -155,16 +160,12 @@ extension FEDashboardViewController: UITableViewDelegate, UITableViewDataSource 
         //self.buttonVehicleSelector = buttonVehicleSelector
         //self.buttonPlanetSelector = buttonPlanetSelector
 
-        cell.configureCell(item: cellItem, target: self, buttonPlanetSelector: #selector(selectPlanet(_:)), buttonVehicleSelector: #selector(selectVehicle(_:)))
+        cell.configureCell(item: cellItem,
+                           target: self, buttonPlanetSelector: #selector(selectPlanet(_:)),
+                           buttonVehicleSelector: #selector(selectVehicle(_:)),
+                           buttonClearVehicleSelector: #selector(clearVehicle(_:)),
+                           buttonClearPlanetSelector: #selector(clearPlanet(_:)))
 
-
-        //let listModel = displayedList[indexPath.row]
-        //cell.lblTitle.text = listModel.title
-        //cell.lblSubTitle.text = listModel.subTitle
-        //if let lImage = listModel.leftImage, !lImage.isEmpty() {
-        //  cell.ivLeft.image = UIImage(named: lImage)
-        //}
-        //cell.toggleCellStyle(isSelected: listModel.isSelcted)
         return cell
     }
 
@@ -188,6 +189,16 @@ extension FEDashboardViewController: UITableViewDelegate, UITableViewDataSource 
     @objc
     func selectVehicle(_ sender: UIButton) {
         interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectVehicle, selectedID: sender.tag))
+    }
+
+    @objc
+    func clearPlanet(_ sender: UIButton) {
+        interactor?.clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectPlanet, selectedID: sender.tag))
+    }
+
+    @objc
+    func clearVehicle(_ sender: UIButton) {
+        interactor?.clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectVehicle, selectedID: sender.tag))
     }
 
 }

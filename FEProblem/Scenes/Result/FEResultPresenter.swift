@@ -27,14 +27,23 @@ class FEResultPresenter: FEResultPresentationLogic {
 
     func presentFEResultDetails(response: FEResultModel.FEResultDetails.Response) {
         var message = ""
+        var planetImage: String?
+        var vehicleImage: String?
+        var missionStatus: String? = "mission_success"
+
         if response.result.status == "success" {
-            message = "Found on \(response.result.planet_name ?? "")"
+            message = "SUCCESS!\nCongratulations 🎉 on finding Falcone!\nKING🤴Khan is mighty pleased!😺\n\nFound on planet (\(response.destination?.planet?.name ?? "")) with the help of \(response.destination?.vehicle?.name ?? "")"
+            vehicleImage = response.destination?.vehicle?.name.lowercased()
+            planetImage = response.destination?.planet?.name.lowercased()
         } else if response.result.status == "false" {
-            message = "Not Found"
+            message = "Mission Unsuccessful!!\nPlease Try Again!"
+            missionStatus = "mission_fail"
         } else if let error = response.result.error {
-            message = error
+            message = "Mission Failed!!\n\(error)"
+            missionStatus = "mission_error"
         }
-        let viewModel = FEResultModel.FEResultDetails.ViewModel(message: message)
+
+        let viewModel = FEResultModel.FEResultDetails.ViewModel(message: message, planetImage: planetImage, vehileImage: vehicleImage, notFoundImage: missionStatus)
         viewController?.displayFEResultDetails(viewModel: viewModel)
     }
 

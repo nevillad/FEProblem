@@ -16,6 +16,10 @@ class DashboardTableViewCell: UITableViewCell {
     @IBOutlet weak var btnSelectPlanet: FEPrimaryButton!
     @IBOutlet weak var btnSelectVehicle: FESecondaryButton!
 
+    @IBOutlet weak var btnClearPlanet: FEPrimaryButton!
+    @IBOutlet weak var btnClearVehicle: FEPrimaryButton!
+
+
     @IBOutlet weak var lblMissionName: UILabel!
 
     // Planet Section
@@ -31,6 +35,10 @@ class DashboardTableViewCell: UITableViewCell {
 
     var buttonVehicleSelector: Selector?
     var buttonPlanetSelector: Selector?
+
+    var buttonClearVehicleSelector: Selector?
+    var buttonClearPlanetSelector: Selector?
+
     var buttonTarget: AnyObject?
 
     fileprivate let selectedColor = UIColor.red.cgColor// Color.secondaryPink100.value
@@ -41,64 +49,25 @@ class DashboardTableViewCell: UITableViewCell {
 
         self.selectionStyle = .none
         setStyles()
-
-        // Initialization code
     }
 
     func setStyles() {
-        containerView.layer.borderColor = secondaryLightGrey.cgColor
-        containerView.layer.borderWidth = 1.0
-        containerView.clipsToBounds = true
-        containerView.layer.cornerRadius = kCornerRadius
-        containerView.layer.masksToBounds = false
-        containerView.layer.shadowColor = secondaryLightGrey.cgColor
-        containerView.layer.shadowOpacity = 1
-        containerView.layer.shadowOffset = CGSize(width: 0, height: 4)
-        containerView.layer.shadowRadius = 4
+        containerView.addShadow()
 
-        ivPlanet.layer.cornerRadius = 5.0
-        // border
-        ivPlanet.layer.borderColor = UIColor.lightGray.cgColor
-        ivPlanet.layer.borderWidth = 0.5
-
-        // drop shadow
-        ivPlanet.layer.shadowColor = UIColor.black.cgColor
-        ivPlanet.layer.shadowOpacity = 0.8
-        ivPlanet.layer.shadowRadius = 3.0
-        ivPlanet.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
-
-        ivVehicle.layer.cornerRadius = 5.0
-        // border
-        ivVehicle.layer.borderColor = UIColor.lightGray.cgColor
-        ivVehicle.layer.borderWidth = 0.5
-
-        // drop shadow
-        ivVehicle.layer.shadowColor = UIColor.black.cgColor
-        ivVehicle.layer.shadowOpacity = 0.8
-        ivVehicle.layer.shadowRadius = 3.0
-        ivVehicle.layer.shadowOffset = CGSize(width: 2.0, height: 2.0)
+        ivPlanet.addShadow()
+        ivPlanet.layer.masksToBounds = true
+        ivVehicle.addShadow()
 
     }
-
-//    func setGradientBackground() {
-//        let colorTop =  Color.tertiaryAquaDeep20.value.cgColor
-//        let colorBottom = Color.tertiaryAquaDeep20.value.withAlphaComponent(0.1).cgColor
-//
-//        let gradientLayer = CAGradientLayer()
-//        gradientLayer.colors = [colorTop, colorBottom]
-//        gradientLayer.locations = [0.0, 1.0]
-//        gradientLayer.frame = self.viewCardDetails.bounds
-//
-//        self.viewCardDetails.layer.insertSublayer(gradientLayer, at:0)
-//        self.viewCardDetails.clipsToBounds = true
-//    }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
 
 
-    func configureCell(item: FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem, target: AnyObject?, buttonPlanetSelector: Selector?, buttonVehicleSelector: Selector? ) {
+    func configureCell(item: FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem, target: AnyObject?, buttonPlanetSelector: Selector?, buttonVehicleSelector: Selector?, buttonClearVehicleSelector: Selector?, buttonClearPlanetSelector: Selector?) {
+
+        buttonTarget = target
 
         lblMissionName.text = item.DisplayedMissionName
 
@@ -106,24 +75,23 @@ class DashboardTableViewCell: UITableViewCell {
         lblDistance.text = item.DisplayedPlanetDistance
         ivPlanet.image = UIImage(named: item.DisplayedPlanetImage ?? "")
         ivPlanet.superview?.isHidden = !item.isPlanetVisible
+        self.buttonPlanetSelector = buttonPlanetSelector
+        self.buttonClearPlanetSelector = buttonClearPlanetSelector
+        btnSelectPlanet.tag = item.ItemTag
+        btnSelectPlanet.setTitle(item.planetName, for: .normal)
+        btnClearPlanet.tag = item.ItemTag
 
         lblVehicleName.text = item.DisplayedVehicleName
         lblVehicleSpeed.text = item.DisplayedVehicleDistance
         ivVehicle.image = UIImage(named: item.DisplayedVehicleImage ?? "")
         ivVehicle.superview?.isHidden = !item.isVehicleVisible
-
-        //btnSelectVehicle.isHidden = !item.isVehicleSelectionEnable
+        self.buttonVehicleSelector = buttonVehicleSelector
+        self.buttonClearVehicleSelector = buttonClearVehicleSelector
         btnSelectVehicle.superview?.superview?.isHidden = !item.isVehicleSelectionEnable
-        self.buttonTarget = target
-        self.btnSelectVehicle.tag = item.ItemTag
-        self.btnSelectPlanet.tag = item.ItemTag
-        self.buttonVehicleSelector = buttonVehicleSelector // #selector(selectVehicle(_:))
-        self.buttonPlanetSelector = buttonPlanetSelector //#selector(selectPlanet(_:))
-
-
         btnSelectVehicle.setTitle(item.vehicleName, for: .normal)
-        btnSelectPlanet.setTitle(item.planetName, for: .normal)
+        btnSelectVehicle.tag = item.ItemTag
         btnSelectVehicle.isEnabled = item.isVehicleSelectionEnable
+        btnClearVehicle.tag = item.ItemTag
 
         if let selector = buttonPlanetSelector {
             btnSelectPlanet.addTarget(buttonTarget, action: selector, for: .touchUpInside)
@@ -131,6 +99,14 @@ class DashboardTableViewCell: UITableViewCell {
 
         if let selector = buttonVehicleSelector {
             btnSelectVehicle.addTarget(buttonTarget, action: selector, for: .touchUpInside)
+        }
+
+        if let selector = buttonClearPlanetSelector {
+            btnClearPlanet.addTarget(buttonTarget, action: selector, for: .touchUpInside)
+        }
+
+        if let selector = buttonClearVehicleSelector {
+            btnClearVehicle.addTarget(buttonTarget, action: selector, for: .touchUpInside)
         }
     }
 }

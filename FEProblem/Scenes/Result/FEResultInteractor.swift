@@ -86,7 +86,11 @@ class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
         FENetworkServices.sendRequest(resource: resource) { result in
             switch result {
             case .success(let result):
-                self.presenter?.presentFEResultDetails(response: FEResultModel.FEResultDetails.Response(result: result))
+                var destination: Destination?
+                if result.status == "success",let name = result.planet_name {
+                    destination = self.destinations.filter{ $0.planet?.name.lowercased() == name.lowercased()}.first
+                }
+                self.presenter?.presentFEResultDetails(response: FEResultModel.FEResultDetails.Response(result: result, destination: destination))
                 break
             case .failure(let error):
                 self.presenter?.presentError(type: .custom(message: error.localizedDescription))

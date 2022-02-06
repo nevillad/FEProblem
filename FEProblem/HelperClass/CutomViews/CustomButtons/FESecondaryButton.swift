@@ -32,19 +32,19 @@ class FESecondaryButton: FEBaseButton {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.imageView?.tintColor = primaryBurgundy
-        self.tintColor = primaryBurgundy
+        self.imageView?.tintColor = primaryColor
+        self.tintColor = primaryColor
     }
 
     private func setupSecondaryButton() {
         self.backgroundColor = whiteColor
-        self.setTitleColor(primaryBurgundy, for: .normal)
-        self.setTitleColor(primaryBurgundy, for: .selected)
+        self.setTitleColor(primaryColor, for: .normal)
+        self.setTitleColor(primaryColor, for: .selected)
         //self.titleFont = Font(.installed(.bold), size: .custom(16)).instance
     }
 
     private func setOutlineBorder(show: Bool = false) {
-        self.layer.borderColor = primaryBurgundy.cgColor
+        self.layer.borderColor = primaryColor.cgColor
         self.layer.borderWidth = 1
     }
 }

@@ -28,6 +28,18 @@ public extension UIView {
             }
         }
     }
+
+    func addShadow(borderColorValue : UIColor = secondaryLightGrey2 ) {
+        self.layer.borderColor = borderColorValue.cgColor
+        self.layer.borderWidth = 0.5
+        self.clipsToBounds = true
+        self.layer.cornerRadius = kCornerRadius
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = secondaryLightGrey.cgColor
+        self.layer.shadowOpacity = 1
+        self.layer.shadowOffset = CGSize(width: 0, height: 4)
+        self.layer.shadowRadius = 4
+    }
     
 }
 

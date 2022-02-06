@@ -25,17 +25,7 @@ class ListOptionsTableViewCell: UITableViewCell {
         // Initialization code
         self.selectionStyle = .none
         self.isSelected = false
-
         setStyles()
-
-        //lblTitle.font = Font(.installed(.bold), size: .standard(.h5)).instance
-        //lblTitle.textColor = Color.black.value
-        //lblSubTitle.font = Font(.installed(.book), size: .standard(.h65)).instance
-        //lblSubTitle.textColor = Color.secondaryGrey70.value
-
-        //containerView.layer.cornerRadius = kCornerRadius
-        //containerView.layer.borderWidth = 1
-        //containerView.layer.borderColor = defaultColor //.cgColor
     }
 
     func setStyles() {
@@ -64,21 +54,15 @@ class ListOptionsTableViewCell: UITableViewCell {
 
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
-        //containerView.backgroundColor = isHighlighted ? Color.secondaryPink20.value : Color.white.value
     }
 
     func toggleCellStyle(isSelected: Bool) {
         if isSelected {
-            //containerView.layer.borderColor = selectedColor.cgColor
             ivRight.image = UIImage(named: "rounded-check")
-           // lblTitle.textColor = selectedColor
         } else {
             containerView.layer.borderColor = defaultColor //.cgColor
             ivRight.image = UIImage(named: "rounded-uncheck")
-            //lblTitle.textColor = Color.black.value
         }
-
     }
-
 
 }

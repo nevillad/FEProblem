@@ -25,7 +25,6 @@ class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
     var presenter: FEResultPresentationLogic?
     var worker: FEResultWorker?
 
-
     var destinations: [Destination] = []
 
     // MARK: Do FEResultDetails

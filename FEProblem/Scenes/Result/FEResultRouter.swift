@@ -25,17 +25,5 @@ class FEResultRouter: NSObject, FEResultRoutingLogic, FEResultDataPassing {
     var dataStore: FEResultDataStore?
 
     // MARK: Navigation
-    func showNextScene() {
-
-    }
-}
-
-// MARK: Passing data
-extension FEResultRouter {
-
-    /*
-    func passDataTo(_ destinationDS: inout <destinationDataStore>?, from sourceDS: FEResultDataStore?) {
-
-    }
-    */
+    func showNextScene() { }
 }

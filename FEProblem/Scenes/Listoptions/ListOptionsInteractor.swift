@@ -13,14 +13,18 @@
 import UIKit
 
 protocol ListOptionsBusinessLogic {
-    func doListOptionsDetails(request: ListOptionsModel.ListOptionsDetails.Request)
-    func initialise(showLoader: Bool)
+    // To inialize list option
+    func initialise()
+    // To select item from list
     func selectItem(index: Int)
 }
 
 protocol ListOptionsDataStore {
+    // To determine selection e.g planet/vehicle, Will be pass from calling class
     var selectionType: SelectionType { get set }
+    // To List of option for selection e.g planets/vehicles, Will be pass from calling class
     var items: [Any] { get set }
+
     var selectedDestination: Destination? { get set }
 }
 
@@ -34,34 +38,40 @@ class ListOptionsInteractor: ListOptionsBusinessLogic, ListOptionsDataStore {
     var items: [Any]  = []
     var selectedDestination: Destination? 
 
-    // MARK: Do ListOptionsDetails
-    func doListOptionsDetails(request: ListOptionsModel.ListOptionsDetails.Request)
-    {
-        worker = ListOptionsWorker()
-        worker?.doSomeWork()
+    // MARK: ListOptionsBusinessLogic Implemenatation
 
-        let response = ListOptionsModel.ListOptionsDetails.Response()
-        presenter?.presentListOptionsDetails(response: response)
-    }
-
-    func initialise(showLoader: Bool = true) {
+    /// Initalize list option from data source and pass it for presentations
+    ///  - Parameters: N/A
+    func initialise() {
         presenter?.presentListOptions(response: ListOptionsModel.ListOptions.Response( selectableCell: true, items: self.items, selectedItem: self.selectedDestination))
     }
 
+    /**
+    Select Item from options e.g Planet/ Vehicle
+     - Check Index value is lower than item count, To avoid out of bound exception
+     - Filter list option bases selectionType
+     - Present Next Screen based on selection
+        - Parameters
+            - index: The index selected option
+     */
     func selectItem(index: Int) {
+        //Check Index value is lower than item count to avoid out of bound exception
         if items.count > index {
             var _id: Int64?
+
+            // Type cast items value in planets array, Get planetID from planet based index from array
             if let planets = self.items as? [Planet], let planetID = planets [index]._id {
                 _id = planetID
 
+            // Type cast items value in vehicles array, Get vehicleID from planet based index from array
             } else if let vehicles = self.items as? [Vehicle], let vehicleID = vehicles[index]._id {
                 _id = vehicleID
             }
+
+
             if _id != nil {
                 presenter?.presentNextScene(response: ListOptionsModel.NextScene.Response(_id: _id!, selectionType: self.selectionType))
             }
-
         }
     }
-
 }

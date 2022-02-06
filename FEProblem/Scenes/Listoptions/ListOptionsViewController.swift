@@ -16,7 +16,6 @@ protocol ListOptionDelegate {
 }
 
 protocol ListOptionsDisplayLogic: class {
-    func displayListOptionsDetails(viewModel: ListOptionsModel.ListOptionsDetails.ViewModel)
     func displayNextScene(viewModel: ListOptionsModel.NextScene.ViewModel)
     func displayLoader(type: ListOptionsLoaderType)
     func displayListOptions(viewModel: ListOptionsModel.ListOptions.ViewModel)
@@ -85,17 +84,20 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        interactor?.initialise(showLoader: true)
+        interactor?.initialise()
     }
 
-    // MARK: Do something
+    /**
+    Initlize UIComponet
+     - Setting tableView DataSouce and Delegate
+     - Resigter cell for tableview
+     */
     private func initialise() {
         tvListOptions.bottomPadding = 0
         tvListOptions.estimatedRowHeight = 1000
         tvListOptions.rowHeight = UITableView.automaticDimension
         tvListOptions.register(UINib(nibName: kListOptionsTableViewCell_ID, bundle: Bundle.main), forCellReuseIdentifier: kListOptionsTableViewCell_ID)
         tvListOptions.bottomPadding = 0
-        //tvListOptions.register(ListOptionsTableViewCell.self, forCellReuseIdentifier: kListOptionsTableViewCell_ID)
         tvListOptions.dataSource = self
         tvListOptions.delegate = self
 
@@ -106,11 +108,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
 
     // MARK: ListOptionsDetails
 
-    func doListOptionsDetails() {
-        let request = ListOptionsModel.ListOptionsDetails.Request()
-        interactor?.doListOptionsDetails(request: request)
-    }
-
     func displayListOptions(viewModel: ListOptionsModel.ListOptions.ViewModel) {
         displayedList = viewModel.displayedList
         self.lblTitle.text = viewModel.title.uppercased()
@@ -119,10 +116,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
         self.vwPlanet.superview?.isHidden = !viewModel.isPlanetViewVisible
         self.ivPlanet.image = UIImage(named: viewModel.planetName?.lowercased() ?? "")
         debugPrint(viewModel)
-    }
-
-    func displayListOptionsDetails(viewModel: ListOptionsModel.ListOptionsDetails.ViewModel) {
-        //nameTextField.text = viewModel.name
     }
 
     func displayNextScene(viewModel: ListOptionsModel.NextScene.ViewModel) {
@@ -137,7 +130,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
             }
         }
     }
-
 }
 
 

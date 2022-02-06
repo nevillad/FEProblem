@@ -13,7 +13,6 @@
 import UIKit
 
 protocol ListOptionsPresentationLogic {
-    func presentListOptionsDetails(response: ListOptionsModel.ListOptionsDetails.Response)
     func presentNextScene(response: ListOptionsModel.NextScene.Response)
     func presentListOptions(response: ListOptionsModel.ListOptions.Response)
 }
@@ -22,10 +21,12 @@ class ListOptionsPresenter: ListOptionsPresentationLogic {
     weak var viewController: ListOptionsDisplayLogic?
 
     // MARK: Do ListOptionsDetails
-    func presentListOptionsDetails(response: ListOptionsModel.ListOptionsDetails.Response) {
 
-    }
-
+    /**
+     Presentation Logic for List Options
+     - Based on response create DisplayItem for mission
+     -
+     */
     func presentListOptions(response: ListOptionsModel.ListOptions.Response) {
         var title: String = ""
         var subTitle: String = ""
@@ -35,6 +36,7 @@ class ListOptionsPresenter: ListOptionsPresentationLogic {
 
         var listItems: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []
 
+        // Checking list fo
         if let planets = response.items as? [Planet] {
             title = "Select Planet"
             subTitle = "Select Planet"
@@ -64,20 +66,45 @@ class ListOptionsPresenter: ListOptionsPresentationLogic {
     }
 
 
+    /**
+    List Display Item Creation for Vehicle List options
+     - filter planet list
+     - Parameters
+        - planetList: Planet model array
+        - selectedPlanet: already selected planet
+     - Returns
+        - DisplayedList Item based on
+     */
+
     fileprivate func getItemFrom( planet planetList: [Planet], selectedPlanet: Planet?)  -> [ListOptionsModel.ListOptions.ViewModel.DisplayedList] {
         var list: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []
+
         for planet in planetList {
 
-            list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: planet.name.uppercased(), subTitle: "Distance: \(planet.distance)", leftImage: planet.name.lowercased(), isSelcted: planet._id == selectedPlanet?._id ))
+            list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: planet.name.uppercased(),
+                                                                             subTitle: "Distance: \(planet.distance)",
+                                                                             leftImage: planet.name.lowercased(),
+                                                                             isSelcted: planet._id == selectedPlanet?._id ))
         }
         return list
     }
 
+    /**
+    Creation of list Item for Vehicle List options
+     - filter vehicle list
+     - Parameters
+        - vehicleList: Vehicle model array
+        - selectedVehicle: already selected vehicle
+     - Returns
+        - DisplayedList Item based on
+     */
     fileprivate func getItemFrom(vehicle vehicleList: [Vehicle], selectedVehicle: Vehicle?)  -> [ListOptionsModel.ListOptions.ViewModel.DisplayedList] {
         var list: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []
         for vehicle in vehicleList {
             list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: vehicle.name.uppercased(),
-                                                                             subTitle: "Units: \(vehicle.totalNo)\nMax Distance \(vehicle.maxDistance) megamiles\nSpeed: \(vehicle.speed) megamiles/hour", leftImage: vehicle.name.lowercased(), isSelcted: vehicle._id == selectedVehicle?._id))
+                                                                             subTitle: "Units: \(vehicle.totalNo)\nMax Distance \(vehicle.maxDistance) megamiles\nSpeed: \(vehicle.speed) megamiles/hour",
+                                                                             leftImage: vehicle.name.lowercased(),
+                                                                             isSelcted: vehicle._id == selectedVehicle?._id))
         }
         return list
     }

@@ -25,6 +25,15 @@
 		3D2B0F2827AD2472001171C8 /* FEResultModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2B0F2227AD2472001171C8 /* FEResultModels.swift */; };
 		3D2B0F2927AD2472001171C8 /* FEResultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2B0F2327AD2472001171C8 /* FEResultViewController.swift */; };
 		3D2B0F2A27AD2472001171C8 /* FEResultInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D2B0F2427AD2472001171C8 /* FEResultInteractor.swift */; };
+		3D9CECAF27AFD6EF00143D30 /* FEDashboardViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECAE27AFD6EF00143D30 /* FEDashboardViewControllerTests.swift */; };
+		3D9CECB227AFFBEF00143D30 /* FEDashboardDisplayLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECB127AFFBEF00143D30 /* FEDashboardDisplayLogicSpy.swift */; };
+		3D9CECB427AFFC1E00143D30 /* FEDashboardBusinessLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECB327AFFC1E00143D30 /* FEDashboardBusinessLogicSpy.swift */; };
+		3D9CECB627AFFC2D00143D30 /* FEDashboardPresentationLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECB527AFFC2D00143D30 /* FEDashboardPresentationLogicSpy.swift */; };
+		3D9CECB727AFFF4600143D30 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1827AA604F0046EE3C /* Main.storyboard */; };
+		3D9CECB827AFFFAC00143D30 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1827AA604F0046EE3C /* Main.storyboard */; };
+		3D9CECBA27B0018000143D30 /* FEDashboardRoutingLogicSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECB927B0018000143D30 /* FEDashboardRoutingLogicSpy.swift */; };
+		3D9CECBC27B0028A00143D30 /* FEDashboardWorkerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECBB27B0028A00143D30 /* FEDashboardWorkerSpy.swift */; };
+		3D9CECC027B0081900143D30 /* FEDashboardInteractorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D9CECBF27B0081900143D30 /* FEDashboardInteractorTests.swift */; };
 		3DE6AB1327AA604F0046EE3C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1227AA604F0046EE3C /* AppDelegate.swift */; };
 		3DE6AB1527AA604F0046EE3C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1427AA604F0046EE3C /* SceneDelegate.swift */; };
 		3DE6AB1A27AA604F0046EE3C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3DE6AB1827AA604F0046EE3C /* Main.storyboard */; };
@@ -94,6 +103,13 @@
 		3D2B0F2227AD2472001171C8 /* FEResultModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEResultModels.swift; sourceTree = "<group>"; };
 		3D2B0F2327AD2472001171C8 /* FEResultViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEResultViewController.swift; sourceTree = "<group>"; };
 		3D2B0F2427AD2472001171C8 /* FEResultInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEResultInteractor.swift; sourceTree = "<group>"; };
+		3D9CECAE27AFD6EF00143D30 /* FEDashboardViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardViewControllerTests.swift; sourceTree = "<group>"; };
+		3D9CECB127AFFBEF00143D30 /* FEDashboardDisplayLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardDisplayLogicSpy.swift; sourceTree = "<group>"; };
+		3D9CECB327AFFC1E00143D30 /* FEDashboardBusinessLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardBusinessLogicSpy.swift; sourceTree = "<group>"; };
+		3D9CECB527AFFC2D00143D30 /* FEDashboardPresentationLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardPresentationLogicSpy.swift; sourceTree = "<group>"; };
+		3D9CECB927B0018000143D30 /* FEDashboardRoutingLogicSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardRoutingLogicSpy.swift; sourceTree = "<group>"; };
+		3D9CECBB27B0028A00143D30 /* FEDashboardWorkerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardWorkerSpy.swift; sourceTree = "<group>"; };
+		3D9CECBF27B0081900143D30 /* FEDashboardInteractorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FEDashboardInteractorTests.swift; sourceTree = "<group>"; };
 		3DE6AB0F27AA604F0046EE3C /* FEProblem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FEProblem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DE6AB1227AA604F0046EE3C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DE6AB1427AA604F0046EE3C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -218,6 +234,28 @@
 			path = Result;
 			sourceTree = "<group>";
 		};
+		3D9CECAD27AFD6AC00143D30 /* DashboardTests */ = {
+			isa = PBXGroup;
+			children = (
+				3D9CECB027AFFBD400143D30 /* Spies */,
+				3D9CECAE27AFD6EF00143D30 /* FEDashboardViewControllerTests.swift */,
+				3D9CECBF27B0081900143D30 /* FEDashboardInteractorTests.swift */,
+			);
+			path = DashboardTests;
+			sourceTree = "<group>";
+		};
+		3D9CECB027AFFBD400143D30 /* Spies */ = {
+			isa = PBXGroup;
+			children = (
+				3D9CECB127AFFBEF00143D30 /* FEDashboardDisplayLogicSpy.swift */,
+				3D9CECB327AFFC1E00143D30 /* FEDashboardBusinessLogicSpy.swift */,
+				3D9CECB527AFFC2D00143D30 /* FEDashboardPresentationLogicSpy.swift */,
+				3D9CECB927B0018000143D30 /* FEDashboardRoutingLogicSpy.swift */,
+				3D9CECBB27B0028A00143D30 /* FEDashboardWorkerSpy.swift */,
+			);
+			path = Spies;
+			sourceTree = "<group>";
+		};
 		3DE6AB0627AA604F0046EE3C = {
 			isa = PBXGroup;
 			children = (
@@ -260,6 +298,7 @@
 		3DE6AB2827AA60500046EE3C /* FEProblemTests */ = {
 			isa = PBXGroup;
 			children = (
+				3D9CECAD27AFD6AC00143D30 /* DashboardTests */,
 				3DE6AB2927AA60500046EE3C /* FEProblemTests.swift */,
 				3DE6AB2B27AA60500046EE3C /* Info.plist */,
 			);
@@ -479,6 +518,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D9CECB727AFFF4600143D30 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,6 +526,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D9CECB827AFFFAC00143D30 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -544,7 +585,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D9CECC027B0081900143D30 /* FEDashboardInteractorTests.swift in Sources */,
+				3D9CECB627AFFC2D00143D30 /* FEDashboardPresentationLogicSpy.swift in Sources */,
+				3D9CECB227AFFBEF00143D30 /* FEDashboardDisplayLogicSpy.swift in Sources */,
+				3D9CECBC27B0028A00143D30 /* FEDashboardWorkerSpy.swift in Sources */,
+				3D9CECBA27B0018000143D30 /* FEDashboardRoutingLogicSpy.swift in Sources */,
+				3D9CECAF27AFD6EF00143D30 /* FEDashboardViewControllerTests.swift in Sources */,
 				3DE6AB2A27AA60500046EE3C /* FEProblemTests.swift in Sources */,
+				3D9CECB427AFFC1E00143D30 /* FEDashboardBusinessLogicSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

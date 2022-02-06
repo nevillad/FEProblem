@@ -12,7 +12,7 @@
 
 import UIKit
 
-enum SelecionType {
+enum SelectionType {
     case selectPlanet
     case selectVehicle
     case showResult
@@ -30,7 +30,7 @@ enum FEDashboardErrorType {
 
 enum FEDashboardModel {
     // MARK: Use cases
-
+    
     enum FEDashboardDetails {
         struct Request {
         }
@@ -39,35 +39,36 @@ enum FEDashboardModel {
         }
         struct ViewModel {
             struct DisplayedItem {
-
+                
                 var DisplayedMissionName: String?
-
+                
                 var DisplayedPlanetName: String?
                 var DisplayedPlanetDistance: String?
                 var DisplayedPlanetImage: String?
                 var isPlanetVisible: Bool = false
-
+                
                 var DisplayedVehicleName: String?
                 var DisplayedVehicleDistance: String?
                 var DisplayedVehicleImage: String?
                 var isVehicleVisible: Bool = false
                 var isVehicleSelectionEnable: Bool = false
-
+                
                 var planetName: String
                 var vehicleName: String
                 var ItemTag: Int
-
+                
             }
             var displayingDestination: [DisplayedItem]
         }
     }
-
+    
     enum FEDashboardDestinationSelection {
         struct Request {
-            var selcctType: SelecionType
+            var selectionType: SelectionType
             var selectedID: Int
         }
-
+        
+        
         struct Response {
             var destinations: [Destination]
         }
@@ -80,32 +81,32 @@ enum FEDashboardModel {
             var displayingDestination: [DisplayedItem]
         }
     }
-
+    
     enum FEDashboardSetOption {
         struct Request {
-            var selcctType: SelecionType
+            var selectionType: SelectionType
             var selectedID: Int64
         }
-
+        
         struct Response {
-
+            
         }
         struct ViewModel {
-
+            
         }
     }
-
+    
     enum NextScene {
         struct Request {
         }
-
+        
         struct Response {
-            var selcctType: SelecionType
+            var selectionType: SelectionType
             var isViewNextVisible: Bool = false
         }
-
+        
         struct ViewModel {
-            var selcctType: SelecionType
+            var selectionType: SelectionType
             var isViewNextVisible: Bool = false
         }
     }

@@ -13,23 +13,35 @@
 import UIKit
 
 protocol FEDashboardBusinessLogic {
-    func initialise(showLoader: Bool)
+    /// Initalize and fetch Planet and Vehicle data
+    func initialise()
+    /// Select Destination Planet/ Vehicle options
     func selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request)
+    /// Set user choosen option for selected Destination
     func setOption(request: FEDashboardModel.FEDashboardSetOption.Request)
+    /// Clear user choosen option for selected Destination
     func clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request)
 }
 
 protocol FEDashboardDataStore {
-    var filtredPlanetsOption: planets { get set }
-    var filtredVehiclesOption: vehicles { get set }
 
+    //Instace Variale for holding data from planet API
     var planets: planets { get set }
+
+    //Instace Variale for holding data from vehicle API
     var vehicles: vehicles { get set }
-    var selectedVehicle: Vehicle? { get set }
-    var selectedPlanet: Planet? { get set }
-    var selectedDestination: Destination? { get set }
+
+    // Destinations Array for Destination class type object to hold refences of mission selected by user
     var destinations: [Destination] { get set }
 
+    // Destination instance variable for user selected locations to allow user to
+    var selectedDestination: Destination? { get set }
+
+    // Filtered Planets array options for planet selection
+    var filtredPlanetsOption: planets { get set }
+
+    // Filtered Vehiles array options for vehicle selection
+    var filtredVehiclesOption: vehicles { get set }
 }
 
 class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
@@ -40,8 +52,6 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
 
     internal var planets: planets = []
     internal var vehicles: vehicles = []
-    internal var selectedPlanet: Planet?
-    internal var selectedVehicle: Vehicle?
     internal var selectedDestination: Destination?
 
     var filtredVehiclesOption: vehicles = []
@@ -50,107 +60,253 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
 
     internal var destinations: [Destination] = []
 
-    // MARK: Do FEDashboardDetails
 
-    func initialise(showLoader: Bool = true) {
+    //MARK:: Bussiness Logic Implementation
+
+    /// Initalize and fetch Planet and Vehicle data
+    /// from Server
+    ///  - Parameters: N/A
+    ///
+    ///  - Make Network call to fetch planet and Vehicle data
+    ///  - Load destiantions Data from local JSON file
+    ///  - Prepare response for Dashboad Presenter
+    func initialise() {
+
+        //// Fetch Planets  Data From Server
         fetchPlanets()
+        //// Fetch Vehicle Data  From Server
         fetchVehicles()
+
+        ////Show loading meessage till data being fetched
         presenter?.presentLoader(type: .general)
+
+        //// Wait until all n/w call response
         waitingGroup.notify(queue: .main) {
             debugPrint(self.planets)
             debugPrint(self.vehicles)
+
+            ////Hide loading meessage after data fetched
             self.presenter?.hideLoader(type: .general)
+
+            ////Initilalised worker to Fetch Local Destinations data
             self.worker = FEDashboardWorker()
+
+            //// Fetching destination data locally using worker
             if let destination = self.worker?.getDestination() {
+
+                //// Assigning data to instance variale
                 self.destinations = destination
-                self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+
+                ////Preparing response for presentation
+                self.presenter?.presentMissions(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+
+                /// Check CTA Visibility after preseting destination
                 self.checkSubmitButtonVisibilty()
+
             } else {
+
+                ////Update user with appropiate message in case failed to load data
                 self.presenter?.presentError(type: .custom(message: "No Data found..."))
             }
         }
     }
 
+    /**
+    Select Destination Planet/ Vehicle options
+     - Select Destination for mission based on selectedID
+     - Filter list option bases selectionType
+     - Present Next Screen based on selection
+        - Parameters
+            - request.selectedID: To filter destinaiton
+            - request.selectionType: Based on selection type filter options plantes/vehicles
+     */
     func selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request) {
-        if let destination = self.destinations.filter({ $0.tag == request.selectedID }).first {
+
+        // Filter destinations based on selectedID
+        if let destination = self.destinations.filter({ $0._id == request.selectedID }).first {
+
+            // Assign filtred destination for setting value
             self.selectedDestination = destination
-            self.filtredVehiclesOption = self.vehicles.filter { $0.totalNo > $0.selectedCount ?? 0 && $0.maxDistance >= destination.planet?.distance ?? 0 || $0._id == destination.vehicle?._id }
-            self.filtredPlanetsOption = self.planets.filter({ $0.isSelected == false || ($0.isSelected == true && $0._id == destination.planet?._id) })
-            presenter?.presentNextScene(response: FEDashboardModel.NextScene.Response(selcctType: request.selcctType))
+
+            //Based on selectiontype filter data
+            switch request.selectionType {
+            case .selectPlanet:
+                // Apply Filter on planets array,Assign to filtredPlanetsOption
+                // - Allow planet not selected for destination/mission
+                // - Allow planet that is alredy selected for destination
+                self.filtredPlanetsOption = self.planets.filter({ $0.isSelected == false || ($0.isSelected == true && $0._id == destination.planet?._id) })
+            case .selectVehicle:
+
+                // Apply Filter on vehicles array bases, Assign to filtredVehiclesOption
+                // - Allow vehicel only available based on Unit totalNo > selectedCount(alredy used for mission)
+                // - Only show vehile for selection which maxdistnace morethan or equalt to selected planet distance
+                self.filtredVehiclesOption = self.vehicles.filter { $0.totalNo > $0.selectedCount ?? 0 && $0.maxDistance >= destination.planet?.distance ?? 0 || $0._id == destination.vehicle?._id }
+            default: break
+            }
+
+            // Present Next Screen based on selection
+            presenter?.presentNextScene(response: FEDashboardModel.NextScene.Response(selectionType: request.selectionType))
         }
     }
 
+    /**
+    Set user choosen option for selected Destination
+     - Filter Planet/Vehile based on selectedID from vehiles/planets array
+     - Filter list option bases selectionType
+     - Present Next Screen based on selection
+        - Parameters
+            - request.selectedID: To Filter Planet/Vehile
+            - request.selectionType: Based on selected type set vehicle/planet for destination
+     */
     func setOption(request: FEDashboardModel.FEDashboardSetOption.Request) {
-        if request.selcctType == .selectVehicle, let vehicle = self.vehicles.filter { $0._id  == request.selectedID}.first {
+
+        //Based on selectin type
+        if request.selectionType == .selectVehicle, let vehicle = self.vehicles.filter({ $0._id  == request.selectedID}).first {
+
+            // --::Steps::--
+            // Step1: Decrement previously seleted vechile count
+            // Step2: Assign new vehicle for destintoin/mission
+            // Step3: Increment selected vehicle count for assigned vehicle
+
+            ///Step1
             self.selectedDestination?.vehicle?.selectedCount! -= 1
+            ///Step2
             self.selectedDestination?.vehicle = vehicle
+            ///Step3
             vehicle.selectedCount! += 1
-        } else if request.selcctType == .selectPlanet,let planet = self.planets.filter({ $0._id  == request.selectedID}).first {
+
+        } else if request.selectionType == .selectPlanet,let planet = self.planets.filter({ $0._id  == request.selectedID}).first {
+
+            // --::Steps::--
+            // Step1: Set unselect previsouls selcted planet for destinnation/mission
+            // Step2: Assign new planet for destintoin/mission
+            // Step3: Set select new planet for destinnation/mission
+
+            ///Step1
             self.selectedDestination?.planet?.setSelected(value: false)
+            ///Step2
             planet.setSelected(value: true)
+            ///Step3
             self.selectedDestination?.planet = planet
         }
 
-        self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+        /// Update Dashboard with newly selected options for destination/mission
+        self.presenter?.presentMissions(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+
+        /// Check CTA Visibility after new selectins for  destination/missiom
         self.checkSubmitButtonVisibilty()
     }
 
+
+    /**
+    Clear user choosen option for selected Destination
+     - Find Destination for option based on selectedID
+     - Filter list option bases selectionType
+     - Present Next Screen based on selection
+        - Parameters
+            - request.selectedID: To Filter Destination
+            - request.selectionType: Based on selected type clear vehicle/planet for destination
+     */
     func clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request) {
-        if let destination = self.destinations.filter({ $0.tag == request.selectedID }).first {
-            if request.selcctType == .selectVehicle, let vehicle = destination.vehicle {
+
+
+        if let destination = self.destinations.filter({ $0._id == request.selectedID }).first {
+            if request.selectionType == .selectVehicle, let vehicle = destination.vehicle {
                 vehicle.selectedCount! -= 1
                 destination.vehicle = nil
-            } else if request.selcctType == .selectPlanet {
+            } else if request.selectionType == .selectPlanet {
                 destination.planet?.setSelected(value: false)
                 destination.planet = nil
             }
         }
 
-        self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+        /// Update Dashboard with newly selected options for destination/mission
+        self.presenter?.presentMissions(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+
+        /// Check CTA Visibility after new selectins for  destination/missiom
         self.checkSubmitButtonVisibilty()
 
     }
 
+    /**
+    Logic to Enable Let's Find Falcone (CTA) to find result
+     - Only enable 
+     - Filter list option bases selectionType
+     - Present Next Screen based on selection
+        - Parameters N/A
+     */
     func checkSubmitButtonVisibilty() {
         let isSubmitVisible: Bool = !(self.destinations.filter{ $0.planet == nil || $0.vehicle == nil }.count > 0)
-        self.presenter?.presentNextScene(response: FEDashboardModel.NextScene.Response(selcctType: .showSubmit, isViewNextVisible: isSubmitVisible))
+        self.presenter?.presentNextScene(response: FEDashboardModel.NextScene.Response(selectionType: .showSubmit, isViewNextVisible: isSubmitVisible))
     }
 }
 
 
 // MARK:: API Calls
 extension FEDashboardInteractor {
+
+    /**
+    Fetch Planets Data from api
+     - Assign fetched data to instace variable planets
+     - Show proper error message in case of error
+        - Parameters N/A
+     */
     func fetchPlanets() {
+
+        /// Prepare URL planets api
         let finalUrl = FEApiActions.Dashboard.getPlanets.urlString
+
+        /// Create resource object based on finalURL
         let resource = Resource<planets>(url: finalUrl)
         debugPrint("Final url is: \(resource.url)")
 
+        /// Enter GCD group
         waitingGroup.enter()
+
+        ///Make API Call using share method
         FENetworkServices.shared.sendRequest(resource: resource) { result in
+
             switch result {
             case .success(let planets):
+                /// Assign fetched data instace variable planets
                 self.planets = planets
                 break
             case .failure(let error):
+                /// Show proper error message to user
                 self.presenter?.presentError(type: .custom(message: error.localizedDescription))
             }
+
+            /// Leave GCD group
             self.waitingGroup.leave()
         }
     }
 
+    /**
+    Fetch Vehicles Data from api
+     - Assign fetched data to instace variable vehicles
+     - Show proper error message in case of error
+        - Parameters N/A
+     */
     func fetchVehicles() {
         let finalUrl = FEApiActions.Dashboard.getVehicles.urlString
         let resource = Resource<vehicles>(url: finalUrl)
         debugPrint("Final url is: \(resource.url)")
+
+        /// Enter GCD group
         waitingGroup.enter()
         FENetworkServices.shared.sendRequest(resource: resource) { result in
             switch result {
             case .success(let vehicles):
+
+                /// Assign fetched data instace variable vehicles
                 self.vehicles = vehicles
                 break
             case .failure(let error):
+                /// Show proper error message to user
                 self.presenter?.presentError(type: .custom(message: error.localizedDescription))
             }
+
+            /// Leave GCD group
             self.waitingGroup.leave()
         }
     }

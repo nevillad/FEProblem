@@ -12,7 +12,7 @@
 
 import UIKit
 protocol ListOptionDelegate {
-    func didSelect(_id: Int64, selectionType: SelecionType)
+    func didSelect(_id: Int64, selectionType: SelectionType)
 }
 
 protocol ListOptionsDisplayLogic: class {

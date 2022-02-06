@@ -28,7 +28,7 @@
         <!--Dashboard View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="FEDashboardViewController" customModule="FEProblem" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FEDashboardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="FEDashboardViewController" customModule="FEProblem" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -105,7 +105,6 @@
                         <outlet property="btnNext" destination="PZi-LG-65a" id="CP4-16-ITT"/>
                         <outlet property="lblMessage" destination="iEm-xD-AKe" id="2AM-Vb-dV5"/>
                         <outlet property="tvDashboard" destination="umA-dJ-OB9" id="c7Z-HN-JTd"/>
-                        <outlet property="vwNext" destination="g2n-tP-cBO" id="MJ0-04-LFs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

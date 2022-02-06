@@ -13,7 +13,7 @@
 import UIKit
 
 protocol FEDashboardRoutingLogic {
-    func showNextScene(screenSelection: SelecionType)
+    func showNextScene(screenSelection: SelectionType)
 }
 
 protocol FEDashboardDataPassing {
@@ -25,7 +25,7 @@ class FEDashboardRouter: NSObject, FEDashboardRoutingLogic, FEDashboardDataPassi
     var dataStore: FEDashboardDataStore?
 
     // MARK: Navigation
-    func showNextScene(screenSelection: SelecionType) {
+    func showNextScene(screenSelection: SelectionType) {
         switch screenSelection {
         case .selectPlanet: showOptionsPopup(screenSelection: screenSelection)
         case .selectVehicle: showOptionsPopup(screenSelection: screenSelection)
@@ -34,7 +34,7 @@ class FEDashboardRouter: NSObject, FEDashboardRoutingLogic, FEDashboardDataPassi
         }
     }
 
-    func showOptionsPopup(screenSelection: SelecionType) {
+    func showOptionsPopup(screenSelection: SelectionType) {
         let bottomSheetContentView = ListOptionsViewController.instantiateFromStoryboard()
         bottomSheetContentView.delegate = viewController
         var destinationDS = bottomSheetContentView.router?.dataStore
@@ -62,7 +62,7 @@ class FEDashboardRouter: NSObject, FEDashboardRoutingLogic, FEDashboardDataPassi
 extension FEDashboardRouter {
 
     // MARK: Passing data
-    func passDataTo(_ destinationDS: inout ListOptionsDataStore?, from sourceDS: FEDashboardDataStore?, selectionType: SelecionType) {
+    func passDataTo(_ destinationDS: inout ListOptionsDataStore?, from sourceDS: FEDashboardDataStore?, selectionType: SelectionType) {
         destinationDS?.selectionType = selectionType
         destinationDS?.selectedDestination = sourceDS?.selectedDestination
         destinationDS?.items = sourceDS?.filtredPlanetsOption ?? []

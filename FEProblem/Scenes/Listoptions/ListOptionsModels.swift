@@ -67,12 +67,12 @@ enum ListOptionsModel {
         }
         struct Response {
             let _id: Int64
-            let selectionType: SelecionType
+            let selectionType: SelectionType
         }
 
         struct ViewModel {
             let _id: Int64
-            let selectionType: SelecionType
+            let selectionType: SelectionType
         }
     }
 }

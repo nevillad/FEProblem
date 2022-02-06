@@ -19,7 +19,7 @@ protocol ListOptionsBusinessLogic {
 }
 
 protocol ListOptionsDataStore {
-    var selectionType: SelecionType { get set }
+    var selectionType: SelectionType { get set }
     var items: [Any] { get set }
     var selectedDestination: Destination? { get set }
 }
@@ -30,7 +30,7 @@ class ListOptionsInteractor: ListOptionsBusinessLogic, ListOptionsDataStore {
     var presenter: ListOptionsPresentationLogic?
     var worker: ListOptionsWorker?
 
-    var selectionType: SelecionType = .selectPlanet
+    var selectionType: SelectionType = .selectPlanet
     var items: [Any]  = []
     var selectedDestination: Destination? 
 

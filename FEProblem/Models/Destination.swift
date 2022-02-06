@@ -10,14 +10,14 @@ import Foundation
 class Destination: Codable {
     var title: String?
     var subTitle: String?
-    var tag: Int?
+    var _id: Int?
     var planet: Planet?
     var vehicle: Vehicle?
 
     enum CodingKeys: String, CodingKey {
         case title
         case subTitle
-        case tag
+        case _id
         case planet
         case vehicle
     }

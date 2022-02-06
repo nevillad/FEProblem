@@ -13,7 +13,7 @@
 import UIKit
 
 protocol FEDashboardDisplayLogic: class {
-    func displayFEDashboardDetails(viewModel: FEDashboardModel.FEDashboardDetails.ViewModel)
+    func displayMissions(viewModel: FEDashboardModel.FEDashboardDetails.ViewModel)
     func displayNextScene(viewModel: FEDashboardModel.NextScene.ViewModel)
     func displayLoader(type: FEDashboardLoaderType)
     func hideLoader(type: FEDashboardLoaderType)
@@ -24,21 +24,28 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     var interactor: FEDashboardBusinessLogic?
     var router: (NSObjectProtocol & FEDashboardRoutingLogic & FEDashboardDataPassing)?
 
+    /// UITableView For showing list of Destinations/ Missions
     @IBOutlet weak var tvDashboard: UITableView!
-    @IBOutlet weak var vwNext: UIView!
+
+    /// UIButton to find Result
     @IBOutlet weak var btnNext: FESecondaryButton!
+
+    /// UILable to show messages to user e.g error, result
     @IBOutlet weak var lblMessage: UILabel!
 
+    /// Datasouce for tvDashboard, holds Lits Item for Missions/Destinations
     var displayedList: [FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem] = []
 
+    /**
+     Static Method to initialize ViewConroller from Storyboarad
+        - Returns FEDashboardViewController object
+     */
     class func instantiateFromStoryboard() ->  FEDashboardViewController {
-        //#error("please update your storyboard name below")
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as!  FEDashboardViewController
     }
 
     // MARK: Object lifecycle
-
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
@@ -50,7 +57,6 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     }
 
     // MARK: Setup
-
     private func setup() {
         let viewController = self
         let interactor = FEDashboardInteractor()
@@ -65,7 +71,6 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     }
 
     // MARK: Routing
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let scene = segue.identifier {
             let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
@@ -76,41 +81,52 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     }
 
     // MARK: View lifecycle
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        initialise()
+    }
+
+    // MARK: Components Insilisation
+
+    /**
+    Initlize UIComponet
+     - Setting Navigation title
+     - Setting tableView DataSouce and Delegate
+     - Resigter cell for tableview
+     */
+    private func initialise() {
+
+        // Setting bar and Title
         self.navigationController?.navigationBar.barTintColor = primaryColor
         self.navigationController?.navigationBar.tintColor = whiteColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: whiteColor]
         self.title = "Finding Falcone".uppercased()
-        initialise()
-    }
 
-    // MARK: Do FEDashboardDetails
-
-    private func initialise() {
-
+        // Auto
         tvDashboard.estimatedRowHeight = 1000
         tvDashboard.rowHeight = UITableView.automaticDimension
-        tvDashboard.register(UINib(nibName: kDashboardTableViewCell_ID, bundle: Bundle.main), forCellReuseIdentifier: kDashboardTableViewCell_ID)
 
+        // Register cell for tableview
+        tvDashboard.register(UINib(nibName: kDashboardTableViewCell_ID, bundle: Bundle.main), forCellReuseIdentifier: kDashboardTableViewCell_ID)
         tvDashboard.dataSource = self
         tvDashboard.delegate = self
-
-        interactor?.initialise(showLoader: false)
+        interactor?.initialise()
     }
+}
 
+// MARK:- FEDashboardDisplayLogic Implementations
+extension FEDashboardViewController {
 
-    func displayFEDashboardDetails(viewModel: FEDashboardModel.FEDashboardDetails.ViewModel) {
+    func displayMissions(viewModel: FEDashboardModel.FEDashboardDetails.ViewModel) {
         self.displayedList = viewModel.displayingDestination
         tvDashboard.reloadData()
     }
 
     func displayNextScene(viewModel: FEDashboardModel.NextScene.ViewModel) {
-        if viewModel.selcctType == .showSubmit {
+        if viewModel.selectionType == .showSubmit {
             btnNext.isEnabled = viewModel.isViewNextVisible
         } else {
-            router?.showNextScene(screenSelection: viewModel.selcctType)
+            router?.showNextScene(screenSelection: viewModel.selectionType)
         }
     }
 
@@ -131,22 +147,36 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
         switch type {
         case .backend: self.lblMessage.text = SOMETHING_WENT_WRONG
         case .custom(let message): self.lblMessage.text = message
-        default: break
         }
     }
+}
+
+// MARK:- IB Actions
+extension FEDashboardViewController {
 
     @IBAction func cliecked(sender: UIButton) {
         router?.showNextScene(screenSelection: .showResult)
     }
 
-}
-
-extension FEDashboardViewController: ListOptionDelegate {
-
-    func didSelect(_id selectedID: Int64, selectionType: SelecionType) {
-        interactor?.setOption(request: FEDashboardModel.FEDashboardSetOption.Request(selcctType: selectionType, selectedID: selectedID))
+    @objc
+    func selectPlanet(_ sender: UIButton) {
+        interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selectionType: .selectPlanet, selectedID: sender.tag))
     }
 
+    @objc
+    func selectVehicle(_ sender: UIButton) {
+        interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selectionType: .selectVehicle, selectedID: sender.tag))
+    }
+
+    @objc
+    func clearPlanet(_ sender: UIButton) {
+        interactor?.clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selectionType: .selectPlanet, selectedID: sender.tag))
+    }
+
+    @objc
+    func clearVehicle(_ sender: UIButton) {
+        interactor?.clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selectionType: .selectVehicle, selectedID: sender.tag))
+    }
 }
 
 // MARK: UITableView delegate and datasource
@@ -157,13 +187,9 @@ extension FEDashboardViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let cell = tableView.dequeueReusableCell(withIdentifier: kDashboardTableViewCell_ID, for: indexPath) as! DashboardTableViewCell
 
         let cellItem = displayedList[indexPath.row]
-        //self.buttonVehicleSelector = buttonVehicleSelector
-        //self.buttonPlanetSelector = buttonPlanetSelector
-
         cell.configureCell(item: cellItem,
                            target: self, buttonPlanetSelector: #selector(selectPlanet(_:)),
                            buttonVehicleSelector: #selector(selectVehicle(_:)),
@@ -172,37 +198,13 @@ extension FEDashboardViewController: UITableViewDelegate, UITableViewDataSource 
 
         return cell
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //var listModel = displayedList[indexPath.row]
-        //if (listModel.leftImage ?? "").isEmpty() {
-        //let currentCell = tableView.cellForRow(at: indexPath) as? ListOptionsTableViewCell {
-        //  listModel.isSelcted = !listModel.isSelcted
-        // currentCell.toggleCellStyle(isSelected: listModel.isSelcted)
-        // update array
-        //displayedList[indexPath.row] = listModel
-        //}
-        //interactor?.updateSelctedProduct(productID: listModel.cellID)
-    }
-
-    @objc
-    func selectPlanet(_ sender: UIButton) {
-        interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectPlanet, selectedID: sender.tag))
-    }
-
-    @objc
-    func selectVehicle(_ sender: UIButton) {
-        interactor?.selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectVehicle, selectedID: sender.tag))
-    }
-
-    @objc
-    func clearPlanet(_ sender: UIButton) {
-        interactor?.clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectPlanet, selectedID: sender.tag))
-    }
-
-    @objc
-    func clearVehicle(_ sender: UIButton) {
-        interactor?.clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request(selcctType: .selectVehicle, selectedID: sender.tag))
-    }
-
 }
+
+// MARK: ListOption Delegate
+extension FEDashboardViewController: ListOptionDelegate {
+
+    func didSelect(_id selectedID: Int64, selectionType: SelectionType) {
+        interactor?.setOption(request: FEDashboardModel.FEDashboardSetOption.Request(selectionType: selectionType, selectedID: selectedID))
+    }
+}
+

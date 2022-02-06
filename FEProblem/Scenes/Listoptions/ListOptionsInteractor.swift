@@ -70,10 +70,10 @@ class ListOptionsInteractor: ListOptionsBusinessLogic, ListOptionsDataStore {
     }
 
     func updateSelctedProduct(index: Int) {
-//        if items.count > index {
-//            if let
-//        }
-//        presenter?.presentNext()
+        //        if items.count > index {
+        //            if let
+        //        }
+        //        presenter?.presentNext()
     }
 
 }

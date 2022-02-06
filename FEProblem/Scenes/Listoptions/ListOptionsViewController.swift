@@ -31,7 +31,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
     fileprivate var displayedList: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []
 
     @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var lblSubTitle: UILabel!
     @IBOutlet weak var ivPlanet: UIImageView!
     @IBOutlet weak var lblPlanetName: UILabel!
     @IBOutlet weak var lblPlanetDistance: UILabel!
@@ -41,13 +40,11 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
     var delegate: ListOptionDelegate?
     
     class func instantiateFromStoryboard() ->  ListOptionsViewController {
-
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         return storyboard.instantiateViewController(withIdentifier: String(describing: self)) as!  ListOptionsViewController //
     }
 
     // MARK: Object lifecycle
-
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
         setup()
@@ -59,7 +56,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
     }
 
     // MARK: Setup
-
     private func setup() {
         let viewController = self
         let interactor = ListOptionsInteractor()
@@ -74,7 +70,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
     }
 
     // MARK: Routing
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let scene = segue.identifier {
             let selector = NSSelectorFromString("routeTo\(scene)WithSegue:")
@@ -83,8 +78,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
             }
         }
     }
-
-    // MARK: View lifecycle
 
     // MARK: View lifecycle
     override func viewDidLoad() {
@@ -96,8 +89,8 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
         super.viewWillAppear(animated)
         interactor?.initialise(showLoader: true)
     }
-    // MARK: Do something
 
+    // MARK: Do something
     private func initialise() {
         tvListOptions.bottomPadding = 0
         tvListOptions.estimatedRowHeight = 1000
@@ -111,19 +104,9 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
         vwPlanet.layer.borderColor = secondaryLightGrey.cgColor
         vwPlanet.layer.borderWidth = 0.5
         vwPlanet.clipsToBounds = true
-        //vwPlanet.layer.cornerRadius = kCornerRadius
-        //vwPlanet.layer.masksToBounds = true
-        //vwPlanet.layer.shadowColor = secondaryLightGrey.cgColor
-        //vwPlanet.layer.shadowOpacity = 1
-        //vwPlanet.layer.shadowOffset = CGSize(width: 0, height: 4)
-        //vwPlanet.layer.shadowRadius = 4
-
-        //interactor?.initialise(showLoader: false)
     }
 
-    // MARK: Do ListOptionsDetails
-
-    //@IBOutlet weak var nameTextField: UITextField!
+    // MARK: ListOptionsDetails
 
     func doListOptionsDetails() {
         let request = ListOptionsModel.ListOptionsDetails.Request()
@@ -133,7 +116,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
     func displayListOptions(viewModel: ListOptionsModel.ListOptions.ViewModel) {
         displayedList = viewModel.displayedList
         self.lblTitle.text = viewModel.title.uppercased()
-      //  self.lblSubTitle.text = viewModel.subTitle
         self.lblPlanetName.text = viewModel.planetName
         self.lblPlanetDistance.text = viewModel.planetDistance
         self.vwPlanet.superview?.isHidden = !viewModel.isPlanetViewVisible
@@ -181,7 +163,6 @@ extension ListOptionsViewController: UITableViewDelegate, UITableViewDataSource 
         cell.lblTitle.text = listModel.title
         cell.lblSubTitle.text = listModel.subTitle
 
-
         if let lImage = listModel.leftImage, !lImage.isEmpty() {
             cell.ivLeft.image = UIImage(named: lImage)
             cell.ivLeft.superview?.isHidden  = false
@@ -191,15 +172,6 @@ extension ListOptionsViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var listModel = displayedList[indexPath.row]
-        //if (listModel.leftImage ?? "").isEmpty() {
-            //let currentCell = tableView.cellForRow(at: indexPath) as? ListOptionsTableViewCell {
-          //  listModel.isSelcted = !listModel.isSelcted
-            // currentCell.toggleCellStyle(isSelected: listModel.isSelcted)
-            // update array
-            //displayedList[indexPath.row] = listModel
-        //}
         interactor?.selectItem(index: indexPath.row)
-
     }
 }

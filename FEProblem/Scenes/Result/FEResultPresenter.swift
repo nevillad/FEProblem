@@ -32,14 +32,14 @@ class FEResultPresenter: FEResultPresentationLogic {
         var missionStatus: String? = "mission_success"
 
         if response.result.status == "success" {
-            message = "SUCCESS!\nCongratulations 🎉 on finding Falcone!\nKING🤴Khan is mighty pleased!😺\n\nFound on planet (\(response.destination?.planet?.name ?? "")) with the help of \(response.destination?.vehicle?.name ?? "")"
+            message = "SUCCESS!!\nCongratulations 🎉 on finding Falcone!\nKING🤴Khan is mighty pleased!😺\n\nFound on planet (\(response.destination?.planet?.name ?? "")) with the help of \(response.destination?.vehicle?.name ?? "")"
             vehicleImage = response.destination?.vehicle?.name.lowercased()
             planetImage = response.destination?.planet?.name.lowercased()
         } else if response.result.status == "false" {
-            message = "Mission Unsuccessful!!\nPlease Try Again!"
+            message = "Mission Failed!!\nPlease Try Again!"
             missionStatus = "mission_fail"
         } else if let error = response.result.error {
-            message = "Mission Failed!!\n\(error)"
+            message = "Mission Aborted!!\n\(error)"
             missionStatus = "mission_error"
         }
 

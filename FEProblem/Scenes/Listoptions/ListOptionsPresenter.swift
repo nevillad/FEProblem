@@ -78,7 +78,7 @@ class ListOptionsPresenter: ListOptionsPresentationLogic {
         var list: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []
         for planet in planetList {
 
-            list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: planet.name, subTitle: "\(planet.distance)", leftImage: planet.name.lowercased(), isSelcted: planet._id == selectedPlanet?._id ))
+            list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: planet.name.uppercased(), subTitle: "Distance: \(planet.distance)", leftImage: planet.name.lowercased(), isSelcted: planet._id == selectedPlanet?._id ))
         }
         return list
     }
@@ -86,7 +86,8 @@ class ListOptionsPresenter: ListOptionsPresentationLogic {
     fileprivate func getItemFrom(vehicle vehicleList: [Vehicle], selectedVehicle: Vehicle?)  -> [ListOptionsModel.ListOptions.ViewModel.DisplayedList] {
         var list: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []
         for vehicle in vehicleList {
-            list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: vehicle.name, subTitle: "\(vehicle.maxDistance)", leftImage: vehicle.name.lowercased(), isSelcted: vehicle._id == selectedVehicle?._id))
+            list.append(ListOptionsModel.ListOptions.ViewModel.DisplayedList(title: vehicle.name.uppercased(),
+                                                                             subTitle: "Units: \(vehicle.totalNo)\nMax Distance \(vehicle.maxDistance) megamiles\nSpeed: \(vehicle.speed) megamiles/hour", leftImage: vehicle.name.lowercased(), isSelcted: vehicle._id == selectedVehicle?._id))
         }
         return list
     }

@@ -19,8 +19,6 @@ protocol ListOptionsBusinessLogic {
 }
 
 protocol ListOptionsDataStore {
-    var title: String { get set }
-    var subTitle: String { get set }
     var selectionType: SelecionType { get set }
     var items: [Any] { get set }
     var selectedDestination: Destination? { get set }
@@ -31,14 +29,12 @@ class ListOptionsInteractor: ListOptionsBusinessLogic, ListOptionsDataStore {
 
     var presenter: ListOptionsPresentationLogic?
     var worker: ListOptionsWorker?
-    //var name: String = ""
+
     var selectionType: SelecionType = .selectPlanet
-    var title: String = ""
-    var subTitle: String = ""
     var items: [Any]  = []
     var selectedDestination: Destination? 
-    // MARK: Do ListOptionsDetails
 
+    // MARK: Do ListOptionsDetails
     func doListOptionsDetails(request: ListOptionsModel.ListOptionsDetails.Request)
     {
         worker = ListOptionsWorker()
@@ -49,8 +45,7 @@ class ListOptionsInteractor: ListOptionsBusinessLogic, ListOptionsDataStore {
     }
 
     func initialise(showLoader: Bool = true) {
-        presenter?.presentListOptions(response: ListOptionsModel.ListOptions.Response(title: title, subTitle: subTitle, selectableCell: true, items: self.items, selectedItem: self.selectedDestination))
-        //presenter?.presentListOptions(response: ListOptionsModel.ListOptions.Response(title: title, subTitle: subTitle, products: self.items, selectedProduct: self.selectedItem))
+        presenter?.presentListOptions(response: ListOptionsModel.ListOptions.Response( selectableCell: true, items: self.items, selectedItem: self.selectedDestination))
     }
 
     func selectItem(index: Int) {
@@ -67,13 +62,6 @@ class ListOptionsInteractor: ListOptionsBusinessLogic, ListOptionsDataStore {
             }
 
         }
-    }
-
-    func updateSelctedProduct(index: Int) {
-        //        if items.count > index {
-        //            if let
-        //        }
-        //        presenter?.presentNext()
     }
 
 }

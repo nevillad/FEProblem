@@ -30,6 +30,7 @@ class FEDashboardRouter: NSObject, FEDashboardRoutingLogic, FEDashboardDataPassi
         case .selectPlanet: showOptionsPopup(screenSelection: screenSelection)
         case .selectVehicle: showOptionsPopup(screenSelection: screenSelection)
         case .showResult:showResultScreen()
+        case .showSubmit: break
         }
     }
 
@@ -62,8 +63,6 @@ extension FEDashboardRouter {
 
     // MARK: Passing data
     func passDataTo(_ destinationDS: inout ListOptionsDataStore?, from sourceDS: FEDashboardDataStore?, selectionType: SelecionType) {
-        destinationDS?.title = "Choose other varients"
-        destinationDS?.subTitle = "Tailor-made for your needs".uppercased()
         destinationDS?.selectionType = selectionType
         destinationDS?.selectedDestination = sourceDS?.selectedDestination
         destinationDS?.items = sourceDS?.filtredPlanetsOption ?? []

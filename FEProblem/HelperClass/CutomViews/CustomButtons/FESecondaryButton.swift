@@ -9,6 +9,12 @@ import UIKit
 
 class FESecondaryButton: FEBaseButton {
 
+    override var isEnabled: Bool {
+        didSet {
+            self.backgroundColor = isEnabled ? whiteColor : secondaryGrey
+        }
+    }
+
     @IBInspectable var showBorder: Bool = false {
         didSet {
             setOutlineBorder(show: showBorder)

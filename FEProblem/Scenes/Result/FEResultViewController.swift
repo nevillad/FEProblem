@@ -14,19 +14,15 @@ import UIKit
 
 protocol FEResultDisplayLogic: class {
     func displayFEResultDetails(viewModel: FEResultModel.FEResultDetails.ViewModel)
-    func displayNextScene(viewModel: FEResultModel.NextScene.ViewModel)
-    func displayLoader(type: FEResultLoaderType)
-    func hideLoader(type: FEResultLoaderType)
     func displayError(type: FEResultErrorType)
 }
 
 class FEResultViewController: BaseViewController, FEResultDisplayLogic {
+
     var interactor: FEResultBusinessLogic?
     var router: (NSObjectProtocol & FEResultRoutingLogic & FEResultDataPassing)?
 
     @IBOutlet weak var lblMesssge: UILabel!
-    @IBOutlet weak var ivPlanet: UIImageView!
-    @IBOutlet weak var ivVehicle: UIImageView!
     @IBOutlet weak var ivMissionStatus: UIImageView!
 
     class func instantiateFromStoryboard() ->  FEResultViewController {
@@ -81,37 +77,12 @@ class FEResultViewController: BaseViewController, FEResultDisplayLogic {
 
     // MARK: Do FEResultDetails
 
-    //@IBOutlet weak var nameTextField: UITextField!
-
-    func doFEResultDetails() {
-        let request = FEResultModel.FEResultDetails.Request()
-        interactor?.doFEResultDetails(request: request)
-    }
-
     func displayFEResultDetails(viewModel: FEResultModel.FEResultDetails.ViewModel) {
         lblMesssge.text = viewModel.message
-        //ivPlanet.image = UIImage(named: viewModel.planetImage ?? "")
-        //ivVehicle.image = UIImage(named: viewModel.vehileImage ?? "")
-        ivMissionStatus.image = UIImage(named: viewModel.notFoundImage ?? "")
-    }
-
-    func displayNextScene(viewModel: FEResultModel.NextScene.ViewModel) {
-        
-    }
-
-    func displayLoader(type: FEResultLoaderType) {
-        DispatchQueue.main.async {
-            switch type {
-            case .general: super.showIndicator("please wait...")
-            }
-        }
-    }
-
-    func hideLoader(type: FEResultLoaderType) {
-        super.hideIndicator()
+        ivMissionStatus.image = UIImage(named: viewModel.missionImage ?? "")
     }
 
     func displayError(type: FEResultErrorType) {
-
+        
     }
 }

@@ -25,6 +25,9 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     var router: (NSObjectProtocol & FEDashboardRoutingLogic & FEDashboardDataPassing)?
 
     @IBOutlet weak var tvDashboard: UITableView!
+    @IBOutlet weak var vwNext: UIView!
+    @IBOutlet weak var btnNext: FESecondaryButton!
+    @IBOutlet weak var lblMessage: UILabel!
 
     var displayedList: [FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem] = []
 
@@ -80,13 +83,10 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
         self.navigationController?.navigationBar.tintColor = whiteColor
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: whiteColor]
         self.title = "Finding Falcone".uppercased()
-        //self.navigationController?.navigationBar.ti
         initialise()
     }
 
     // MARK: Do FEDashboardDetails
-
-    // MARK: Do something
 
     private func initialise() {
 
@@ -100,10 +100,6 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
         interactor?.initialise(showLoader: false)
     }
 
-    func doFEDashboardDetails() {
-        let request = FEDashboardModel.FEDashboardDetails.Request()
-        interactor?.doFEDashboardDetails(request: request)
-    }
 
     func displayFEDashboardDetails(viewModel: FEDashboardModel.FEDashboardDetails.ViewModel) {
         self.displayedList = viewModel.displayingDestination
@@ -111,29 +107,37 @@ class FEDashboardViewController: BaseViewController, FEDashboardDisplayLogic {
     }
 
     func displayNextScene(viewModel: FEDashboardModel.NextScene.ViewModel) {
-        router?.showNextScene(screenSelection: viewModel.selcctType)
+        if viewModel.selcctType == .showSubmit {
+            btnNext.isEnabled = viewModel.isViewNextVisible
+        } else {
+            router?.showNextScene(screenSelection: viewModel.selcctType)
+        }
     }
 
     func displayLoader(type: FEDashboardLoaderType) {
         DispatchQueue.main.async {
             switch type {
-            case .general: super.showIndicator("please wait...")
+            case .general: self.lblMessage.superview?.isHidden = false
             }
         }
     }
 
     func hideLoader(type: FEDashboardLoaderType) {
-        super.hideIndicator()
+        self.lblMessage.superview?.isHidden = true
     }
 
     func displayError(type: FEDashboardErrorType) {
-
+        self.lblMessage.superview?.isHidden = false
+        switch type {
+        case .backend: self.lblMessage.text = SOMETHING_WENT_WRONG
+        case .custom(let message): self.lblMessage.text = message
+        default: break
+        }
     }
 
     @IBAction func cliecked(sender: UIButton) {
         router?.showNextScene(screenSelection: .showResult)
     }
-
 
 }
 

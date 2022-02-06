@@ -36,8 +36,26 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="U4i-gb-3J8">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="774"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cSA-IM-qLk">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="128"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fetching data...." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iEm-xD-AKe">
+                                                <rect key="frame" x="10" y="10" width="394" height="108"/>
+                                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="iEm-xD-AKe" firstAttribute="leading" secondItem="cSA-IM-qLk" secondAttribute="leading" constant="10" id="Hl0-vd-jJQ"/>
+                                            <constraint firstItem="iEm-xD-AKe" firstAttribute="top" secondItem="cSA-IM-qLk" secondAttribute="top" constant="10" id="cPH-qB-GHN"/>
+                                            <constraint firstAttribute="bottom" secondItem="iEm-xD-AKe" secondAttribute="bottom" constant="10" id="fS3-fx-mrP"/>
+                                            <constraint firstAttribute="trailing" secondItem="iEm-xD-AKe" secondAttribute="trailing" constant="10" id="g2M-Dh-CT6"/>
+                                        </constraints>
+                                    </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="umA-dJ-OB9">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="664"/>
+                                        <rect key="frame" x="0.0" y="148" width="414" height="516"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g2n-tP-cBO">
@@ -48,7 +66,8 @@
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="B5H-q5-igm"/>
                                                 </constraints>
-                                                <state key="normal" title="Let's Find"/>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                                <state key="normal" title="LET'S, FIND FALCONE 🚀"/>
                                                 <connections>
                                                     <action selector="clieckedWithSender:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SJp-Qk-V8M"/>
                                                 </connections>
@@ -64,7 +83,9 @@
                                     </view>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstItem="cSA-IM-qLk" firstAttribute="leading" secondItem="U4i-gb-3J8" secondAttribute="leading" id="4OG-Zx-vTQ"/>
                                     <constraint firstAttribute="trailing" secondItem="g2n-tP-cBO" secondAttribute="trailing" id="BCO-V2-wB2"/>
+                                    <constraint firstAttribute="trailing" secondItem="cSA-IM-qLk" secondAttribute="trailing" id="DpG-kG-xpM"/>
                                     <constraint firstItem="g2n-tP-cBO" firstAttribute="leading" secondItem="U4i-gb-3J8" secondAttribute="leading" id="rAv-Zs-xvk"/>
                                 </constraints>
                             </stackView>
@@ -81,7 +102,10 @@
                     <navigationItem key="navigationItem" id="25H-ER-U46"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
+                        <outlet property="btnNext" destination="PZi-LG-65a" id="CP4-16-ITT"/>
+                        <outlet property="lblMessage" destination="iEm-xD-AKe" id="2AM-Vb-dV5"/>
                         <outlet property="tvDashboard" destination="umA-dJ-OB9" id="c7Z-HN-JTd"/>
+                        <outlet property="vwNext" destination="g2n-tP-cBO" id="MJ0-04-LFs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

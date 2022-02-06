@@ -15,9 +15,6 @@ import UIKit
 protocol ListOptionsPresentationLogic {
     func presentListOptionsDetails(response: ListOptionsModel.ListOptionsDetails.Response)
     func presentNextScene(response: ListOptionsModel.NextScene.Response)
-    func presentLoader(type: ListOptionsLoaderType)
-    func hideLoader(type: ListOptionsLoaderType)
-    func presentError(type: ListOptionsErrorType)
     func presentListOptions(response: ListOptionsModel.ListOptions.Response)
 }
 
@@ -66,13 +63,6 @@ class ListOptionsPresenter: ListOptionsPresentationLogic {
         viewController?.displayLoader(type: type)
     }
 
-    func hideLoader(type: ListOptionsLoaderType) {
-        viewController?.hideLoader(type: type)
-    }
-
-    func presentError(type: ListOptionsErrorType) {
-        viewController?.displayError(type: type)
-    }
 
     fileprivate func getItemFrom( planet planetList: [Planet], selectedPlanet: Planet?)  -> [ListOptionsModel.ListOptions.ViewModel.DisplayedList] {
         var list: [ListOptionsModel.ListOptions.ViewModel.DisplayedList] = []

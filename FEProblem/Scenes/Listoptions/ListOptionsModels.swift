@@ -38,8 +38,6 @@ enum ListOptionsModel {
         }
 
         struct Response {
-            var title: String
-            var subTitle: String
             var selectableCell: Bool = false
             var items: [Any]
             var selectedItem: Destination?

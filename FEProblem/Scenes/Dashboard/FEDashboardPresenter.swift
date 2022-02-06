@@ -43,23 +43,8 @@ class FEDashboardPresenter: FEDashboardPresentationLogic {
                                                                                    vehicleName: destination.vehicle != nil ? "Change Vehicle" : "Select Vehicle",
                                                                                    ItemTag: destination.tag ?? 0)
 
-//            //let item = FEDashboardModel.FEDashboardDetails.ViewModel.DisplayedItem(DisplayedPlanetName: destination.planet?.name,
-//                                                                        DisplayedPlanetDistance: destination.planet?.distance,
-//                                                                        DisplayedPlanetImage: destination.planet?.name.lowercased(),
-//                                                                        isPlanetVisible: !(destination.planet == nil),
-//                                                                        DisplayedVehicleName: destination.vehicle?.name,
-//                                                                        DisplayedVehicleDistance: destination.vehicle?.maxDistance,
-//                                                                        DisplayedVehicleImage: destination.vehicle?.name.lowercased(),
-//                                                                        isVehicleSelectionEnable: !(destination.planet == nil),
-//                                                                        planetName: destination.planet?.name ?? "Select Planet",
-//                                                                        vehicleName: destination.vehicle?.name ?? "Select Vehicle",
-//                                                                        ItemTag: destination.tag ?? 0)
-
             listItem.append(item)
 
-            //planetName: ,
-
-              //                                                              isVehicleSelectionEnable: !(destination.planet == nil),
         }
 
         let viewModel = FEDashboardModel.FEDashboardDetails.ViewModel(displayingDestination: listItem)
@@ -67,7 +52,7 @@ class FEDashboardPresenter: FEDashboardPresentationLogic {
     }
 
     func presentNextScene(response: FEDashboardModel.NextScene.Response) {
-        let viewModel = FEDashboardModel.NextScene.ViewModel(selcctType: response.selcctType)
+        let viewModel = FEDashboardModel.NextScene.ViewModel(selcctType: response.selcctType, isViewNextVisible: response.isViewNextVisible)
         viewController?.displayNextScene(viewModel: viewModel)
     }
 

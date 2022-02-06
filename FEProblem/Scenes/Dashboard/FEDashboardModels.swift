@@ -16,7 +16,7 @@ enum SelecionType {
     case selectPlanet
     case selectVehicle
     case showResult
-
+    case showSubmit
 }
 
 enum FEDashboardLoaderType {
@@ -101,10 +101,12 @@ enum FEDashboardModel {
 
         struct Response {
             var selcctType: SelecionType
+            var isViewNextVisible: Bool = false
         }
 
         struct ViewModel {
             var selcctType: SelecionType
+            var isViewNextVisible: Bool = false
         }
     }
 }

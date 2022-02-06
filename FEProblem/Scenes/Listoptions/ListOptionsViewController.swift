@@ -19,8 +19,6 @@ protocol ListOptionsDisplayLogic: class {
     func displayListOptionsDetails(viewModel: ListOptionsModel.ListOptionsDetails.ViewModel)
     func displayNextScene(viewModel: ListOptionsModel.NextScene.ViewModel)
     func displayLoader(type: ListOptionsLoaderType)
-    func hideLoader(type: ListOptionsLoaderType)
-    func displayError(type: ListOptionsErrorType)
     func displayListOptions(viewModel: ListOptionsModel.ListOptions.ViewModel)
 }
 
@@ -140,13 +138,6 @@ class ListOptionsViewController: BaseViewController, ListOptionsDisplayLogic {
         }
     }
 
-    func hideLoader(type: ListOptionsLoaderType) {
-        super.hideIndicator()
-    }
-
-    func displayError(type: ListOptionsErrorType) {
-
-    }
 }
 
 

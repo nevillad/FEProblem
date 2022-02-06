@@ -13,7 +13,6 @@
 import UIKit
 
 protocol FEDashboardBusinessLogic {
-    func doFEDashboardDetails(request: FEDashboardModel.FEDashboardDetails.Request)
     func initialise(showLoader: Bool)
     func selectDestination(request: FEDashboardModel.FEDashboardDestinationSelection.Request)
     func setOption(request: FEDashboardModel.FEDashboardSetOption.Request)
@@ -53,22 +52,21 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
 
     // MARK: Do FEDashboardDetails
 
-    func doFEDashboardDetails(request: FEDashboardModel.FEDashboardDetails.Request) {
-        worker = FEDashboardWorker()
-        // let response = FEDashboardModel.FEDashboardDetails.Response()
-        // presenter?.presentFEDashboardDetails(response: response)
-    }
-
     func initialise(showLoader: Bool = true) {
         fetchPlanets()
         fetchVehicles()
+        presenter?.presentLoader(type: .general)
         waitingGroup.notify(queue: .main) {
             debugPrint(self.planets)
             debugPrint(self.vehicles)
+            self.presenter?.hideLoader(type: .general)
             self.worker = FEDashboardWorker()
             if let destination = self.worker?.getDestination() {
                 self.destinations = destination
                 self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+                self.checkSubmitButtonVisibilty()
+            } else {
+                self.presenter?.presentError(type: .custom(message: "No Data found..."))
             }
         }
     }
@@ -94,6 +92,7 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
         }
 
         self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+        self.checkSubmitButtonVisibilty()
     }
 
     func clearSelection(request: FEDashboardModel.FEDashboardDestinationSelection.Request) {
@@ -108,10 +107,19 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
         }
 
         self.presenter?.presentFEDashboardDetails(response: FEDashboardModel.FEDashboardDetails.Response(destinations: self.destinations))
+        self.checkSubmitButtonVisibilty()
 
     }
 
+    func checkSubmitButtonVisibilty() {
+        let isSubmitVisible: Bool = !(self.destinations.filter{ $0.planet == nil || $0.vehicle == nil }.count > 0)
+        self.presenter?.presentNextScene(response: FEDashboardModel.NextScene.Response(selcctType: .showSubmit, isViewNextVisible: isSubmitVisible))
+    }
+}
 
+
+// MARK:: API Calls
+extension FEDashboardInteractor {
     func fetchPlanets() {
         let finalUrl = FEApiActions.Dashboard.getPlanets.urlString
         let resource = Resource<planets>(url: finalUrl)
@@ -119,7 +127,6 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
 
         waitingGroup.enter()
         FENetworkServices.shared.sendRequest(resource: resource) { result in
-            self.presenter?.hideLoader(type: .general)
             switch result {
             case .success(let planets):
                 self.planets = planets
@@ -135,10 +142,8 @@ class FEDashboardInteractor: FEDashboardBusinessLogic, FEDashboardDataStore {
         let finalUrl = FEApiActions.Dashboard.getVehicles.urlString
         let resource = Resource<vehicles>(url: finalUrl)
         debugPrint("Final url is: \(resource.url)")
-
         waitingGroup.enter()
         FENetworkServices.shared.sendRequest(resource: resource) { result in
-            self.presenter?.hideLoader(type: .general)
             switch result {
             case .success(let vehicles):
                 self.vehicles = vehicles

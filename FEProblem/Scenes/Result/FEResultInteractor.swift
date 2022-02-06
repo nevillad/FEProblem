@@ -13,7 +13,6 @@
 import UIKit
 
 protocol FEResultBusinessLogic {
-    func doFEResultDetails(request: FEResultModel.FEResultDetails.Request)
     func initialise(showLoader: Bool)
 }
 
@@ -23,21 +22,13 @@ protocol FEResultDataStore {
 
 class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
 
-    var destinations: [Destination] = []
-    
     var presenter: FEResultPresentationLogic?
     var worker: FEResultWorker?
-    //var name: String = ""
+
+
+    var destinations: [Destination] = []
 
     // MARK: Do FEResultDetails
-
-    func doFEResultDetails(request: FEResultModel.FEResultDetails.Request)
-    {
-        worker = FEResultWorker()
-        worker?.doSomeWork()
-
-        
-    }
 
     func initialise(showLoader: Bool = true) {
         fetchToken()
@@ -46,7 +37,6 @@ class FEResultInteractor: FEResultBusinessLogic, FEResultDataStore {
     func fetchToken() {
         let finalUrl = FEApiActions.token.urlString
         debugPrint(finalUrl)
-        //"https://findfalcone.herokuapp.com/token"
         var resource = Resource<Token>(url: finalUrl)
         resource.useCacheResponse = false
         resource.httpMethod = HTTPMethod.post

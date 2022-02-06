@@ -14,9 +14,6 @@ import UIKit
 
 protocol FEResultPresentationLogic {
     func presentFEResultDetails(response: FEResultModel.FEResultDetails.Response)
-    func presentNextScene(response: FEResultModel.NextScene.Response)
-    func presentLoader(type: FEResultLoaderType)
-    func hideLoader(type: FEResultLoaderType)
     func presentError(type: FEResultErrorType)
 }
 
@@ -27,14 +24,10 @@ class FEResultPresenter: FEResultPresentationLogic {
 
     func presentFEResultDetails(response: FEResultModel.FEResultDetails.Response) {
         var message = ""
-        var planetImage: String?
-        var vehicleImage: String?
         var missionStatus: String? = "mission_success"
 
         if response.result.status == "success" {
             message = "SUCCESS!!\nCongratulations 🎉 on finding Falcone!\nKING🤴Khan is mighty pleased!😺\n\nFound on planet (\(response.destination?.planet?.name ?? "")) with the help of \(response.destination?.vehicle?.name ?? "")"
-            vehicleImage = response.destination?.vehicle?.name.lowercased()
-            planetImage = response.destination?.planet?.name.lowercased()
         } else if response.result.status == "false" {
             message = "Mission Failed!!\nPlease Try Again!"
             missionStatus = "mission_fail"
@@ -43,21 +36,8 @@ class FEResultPresenter: FEResultPresentationLogic {
             missionStatus = "mission_error"
         }
 
-        let viewModel = FEResultModel.FEResultDetails.ViewModel(message: message, planetImage: planetImage, vehileImage: vehicleImage, notFoundImage: missionStatus)
+        let viewModel = FEResultModel.FEResultDetails.ViewModel(message: message, missionImage: missionStatus)
         viewController?.displayFEResultDetails(viewModel: viewModel)
-    }
-
-    func presentNextScene(response: FEResultModel.NextScene.Response) {
-        let viewModel = FEResultModel.NextScene.ViewModel()
-        viewController?.displayNextScene(viewModel: viewModel)
-    }
-
-    func presentLoader(type: FEResultLoaderType) {
-        viewController?.displayLoader(type: type)
-    }
-
-    func hideLoader(type: FEResultLoaderType) {
-        viewController?.hideLoader(type: type)
     }
 
     func presentError(type: FEResultErrorType) {
